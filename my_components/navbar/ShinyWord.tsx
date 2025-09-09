@@ -12,9 +12,9 @@ export function ShinyWord({ children }: { children: React.ReactNode }) {
       <motion.span
         initial={{ x: "-100%" }}
         animate={{ x: "500%" }}
-        transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
+        transition={{ duration: 3, ease: "easeOut", repeat: Infinity }}
         aria-hidden="true"
-        className="absolute top-0 bottom-0 skew-x-12 left-0 w-[20%] pointer-events-none z-20 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+        className="absolute top-0 bottom-0 skew-x-12 left-0 w-[20%] pointer-events-none z-20 bg-gradient-to-r from-transparent via-white/60 to-transparent"
       />
     </span>
   );

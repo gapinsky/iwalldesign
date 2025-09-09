@@ -65,7 +65,7 @@ export default function Surfaces({
 }) {
   return (
     <section aria-labelledby="materials-heading">
-      <div className="container mx-auto px-5 py-5 overflow-hidden">
+      <div className="container mx-auto px-5 py-5 overflow-hidden md:px-10">
         <header className="max-w-3xl mx-auto  mb-10">
           <h2
             id="materials-heading"

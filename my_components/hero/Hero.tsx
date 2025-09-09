@@ -21,21 +21,21 @@ export default function Hero() {
             <MapPin className="scale-60" /> Koszalin, Kołobrzeg, Białogard i
             okolice
           </p>
-          <h1 className="text-3xl font-bold lg:text-4xl xl:text-6xl">
+          <h1 className="text-3xl font-bold lg:text-4xl xl:text-6xl  ">
             Każda <ShinyWord> powierzchnia </ShinyWord>
             może być płótnem
           </h1>
-          <h2 className="text-black/70 mb-10 xl:text-2xl xl:mb-20">
+          <h2 className="text-black/70 mb-10 xl:text-2xl xl:mb-20 ">
             Dzięki technologii druku UV wprowadzamy kolor, design i trwałość w
             każdy detal Twojego otoczenia. Twoje pomysły stają się
             rzeczywistością!
           </h2>
-          <div className="flex justify-between text-sm gap-5 mb-5 xl:text-lg xl:font-regular xl:gap-20">
-            <button className="text-white/90 gap-1  bg-gradient-to-r from-[#00C9A7] via-[#00C9A7] to-[#16B1C2]  inline-flex items-center justify-center border-2 border-[#05b698] py-2 px-1 w-full  rounded-sm ">
+          <div className="flex justify-start text-sm gap-5 mb-5 xl:text-md xl:font-regular xl:gap-5">
+            <button className="text-white/90 gap-1  bg-gradient-to-r from-[#00C9A7] via-[#00C9A7] to-[#16B1C2]  inline-flex items-center justify-center border-2 border-[#05b698] py-2 px-6 w-fit  rounded-sm ">
               <Check className="scale-80 xl:scale-100" />
               Zamów nadruk
             </button>
-            <button className="text-black/80   inline-flex items-center justify-center gap-1 border-2   py-2 px-1 w-full  rounded-sm ">
+            <button className="text-black/80   inline-flex items-center justify-center gap-1 border-2   py-2 px-6 w-fit  rounded-sm ">
               <Search className="scale-80" />
               Nasze realizacje
             </button>
@@ -57,12 +57,12 @@ export default function Hero() {
         </div>
         {/* Images */}
         <div className="w-[95%] md:w-[95%] grid grid-cols-12 gap-3  lg:gap-5 lg:max-w-[500px]">
-          <figure className="col-span-12 ">
+          <figure className="col-span-12 hover:-rotate-4 hover:scale-95  duration-75">
             <motion.div
               initial={{ scale: 0, rotate: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="relative aspect-square   overflow-hidden  shadow-xl rounded-sm border-8 border-white hover:-rotate-4 hover:scale-98 duration-75"
+              className="relative aspect-square   overflow-hidden  shadow-xl rounded-sm border-8 border-white "
             >
               <ImgWithSkeleton
                 className="rounded-xs object-cover"
