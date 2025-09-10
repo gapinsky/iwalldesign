@@ -2,6 +2,7 @@ import About from "@/my_components/aboutUs/About";
 import BeforeAfter from "@/my_components/beforeAfter/BeforeAfter";
 import Hero from "@/my_components/hero/Hero";
 import Navbar from "@/my_components/navbar/Navbar";
+import Gallery from "@/my_components/portfolio/Gallery";
 import Surfaces from "@/my_components/surfaces/Surfaces";
 import WhereUV from "@/my_components/whereUv/WhereUV";
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
         <About />
         <Surfaces />
         <WhereUV />
+        <Gallery />
       </main>
     </>
   );
