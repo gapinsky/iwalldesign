@@ -16,7 +16,7 @@ export default function Home() {
         <About />
         <Surfaces />
         <WhereUV />
-        <Gallery />
+        {/* <Gallery /> */}
         <Pricing />
       </main>
     </>

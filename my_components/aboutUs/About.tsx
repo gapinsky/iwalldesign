@@ -10,7 +10,6 @@ export default function AboutSection() {
       className="bg-white  border-2 "
     >
       <div className="container  p-5 mx-auto  grid grid-cols-1 gap-10   md:grid-cols-2 md:px-10 xl:gap-50">
-        {/* Image */}
         <div className="space-y-6 order-2  md:order-0 xl:order-1">
           <figure className="relative   overflow-hidden rounded-md">
             <div className="relative aspect-[4/3] w-full ">
@@ -35,15 +34,15 @@ export default function AboutSection() {
           </div>
         </div>
 
-        <div className="space-y-4 text-black/70 xl:text-xl ">
-          <h2 className="text-3xl font-semibold lg:text-4xl xl:text-5xl mb-6 xl:mb-12">
+        <div className="space-y-4 text-black/90 xl:text-xl ">
+          <h2 className="text-3xl font-semibold text-black lg:text-4xl xl:text-5xl mb-6 xl:mb-12">
             Kim jesteśmy? <ShinyWord>Poznaj nas!</ShinyWord>
           </h2>
           <p className="tracking-wide   xl:pb-6">
             Specjalizujemy się w druku UV na ścianach, podłogach i odzieży w{" "}
-            <strong className="text-black">
+            <span className="text-blue-600 font-semibold">
               Koszalinie, Białogardzie, Kołobrzegu i okolicach
-            </strong>
+            </span>
             . Nasza technologia pozwala tworzyć trwałe nadruki bezpośrednio na
             różnych powierzchniach – od gładkich ścian, przez beton i płytki, aż
             po tkaniny i elementy dekoracyjne.

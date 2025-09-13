@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@tabler/icons-react": "^3.34.1",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/react": "^3.0.0",

@@ -1,68 +1,111 @@
 // my_components/MaterialsSection.tsx
+"use client";
 import Image from "next/image";
 import { ShinyWord } from "../navbar/ShinyWord";
+import { Tabs } from "@/components/ui/tabs";
+import { motion } from "motion/react";
 
 type Material = { label: string; img: string };
-type Category = { name: string; items: Material[] };
+type Category = {
+  ściany: Material[];
+  podłogi: Material[];
+  tekstylia: Material[];
+};
 
-const CATEGORIES: Category[] = [
+const categories: Category = {
+  ściany: [
+    {
+      label: "Gładka ściana",
+      img: "/assets/images/surfaces/gladka_sciana.png",
+    },
+    {
+      label: "Elewacja zewnętrzna",
+      img: "/assets/images/surfaces/elewacja.png",
+    },
+    { label: "Tynk", img: "/assets/images/surfaces/tynk.png" },
+    { label: "Cegła", img: "/assets/images/surfaces/cegla.png" },
+    { label: "Beton", img: "/assets/images/surfaces/beton.png" },
+  ],
+  podłogi: [
+    {
+      label: "Parkiet drewniany",
+      img: "/assets/images/surfaces/parkiet.png",
+    },
+    { label: "Panele winylowe", img: "/assets/images/surfaces/panele.png" },
+    {
+      label: "Beton przemysłowy",
+      img: "/assets/images/surfaces/beton_przemyslowy.png",
+    },
+    { label: "Płytki ceramiczne", img: "/assets/images/surfaces/plytki.png" },
+  ],
+  tekstylia: [
+    { label: "Bawełna", img: "/assets/images/surfaces/bawelna.png" },
+    { label: "Poliester", img: "/assets/images/surfaces/poliester.png" },
+    {
+      label: "Mieszanki tkanin",
+      img: "/assets/images/surfaces/mieszanki.png",
+    },
+    {
+      label: "Tkaniny techniczne",
+      img: "/assets/images/surfaces/techniczne.png",
+    },
+  ],
+};
+
+const surfaces = [
   {
-    name: "Ściany",
-    items: [
-      {
-        label: "Gładka ściana",
-        img: "/assets/images/surfaces/gladka_sciana.png",
-      },
-      {
-        label: "Elewacja zewnętrzna",
-        img: "/assets/images/surfaces/elewacja.png",
-      },
-      { label: "Tynk", img: "/assets/images/surfaces/tynk.png" },
-      { label: "Cegła", img: "/assets/images/surfaces/cegla.png" },
-      { label: "Beton", img: "/assets/images/surfaces/beton.png" },
-    ],
+    title: "Ściany",
+    value: "walls",
+    content: (
+      <div className="w-full overflow-hidden relative h-full rounded-md  text-xl border-2  md:text-4xl font-bold bg-white shadow-lg">
+        <div className="flex flex-col h-full gap-0.5 bg-black/5">
+          {categories["ściany"].map((item) => (
+            <motion.div
+              initial={{ height: "100%" }}
+              whileHover={{ height: "700%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              key={item.label}
+              className="relative   w-full h-full  overflow-hidden "
+            >
+              <div className="w-full h-full absolute left-0 top-0 bg-black opacity-25 z-10 "></div>
+              <Image
+                src={item.img}
+                alt={item.label}
+                fill
+                className="object-cover"
+                sizes="(max-width: 120px) 70vw, (max-width: 1400px) 70vw, 70vw"
+                priority={false}
+              />
+              <p className="absolute  left-10 bottom-10  text-4xl  text-white/90 z-20  text-shadow-xs ">
+                {item.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    ),
   },
   {
-    name: "Podłogi",
-    items: [
-      {
-        label: "Parkiet drewniany",
-        img: "/assets/images/surfaces/parkiet.png",
-      },
-      { label: "Panele winylowe", img: "/assets/images/surfaces/panele.png" },
-      {
-        label: "Beton przemysłowy",
-        img: "/assets/images/surfaces/beton_przemyslowy.png",
-      },
-      { label: "Płytki ceramiczne", img: "/assets/images/surfaces/plytki.png" },
-    ],
+    title: "Podłogi",
+    value: "floors",
+    content: (
+      <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold bg-white shadow-lg">
+        <p>Podłogi</p>
+      </div>
+    ),
   },
   {
-    name: "Tekstylia",
-    items: [
-      { label: "Bawełna", img: "/assets/images/surfaces/bawelna.png" },
-      { label: "Poliester", img: "/assets/images/surfaces/poliester.png" },
-      {
-        label: "Mieszanki tkanin",
-        img: "/assets/images/surfaces/mieszanki.png",
-      },
-      {
-        label: "Tkaniny techniczne",
-        img: "/assets/images/surfaces/techniczne.png",
-      },
-    ],
+    title: "Tekstylia",
+    value: "textile",
+    content: (
+      <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold bg-white shadow-lg">
+        <p>Tekstylia</p>
+      </div>
+    ),
   },
 ];
 
-export default function Surfaces({
-  title = "Drukujemy na każdej powierzchni.",
-  intro = "Poznaj szeroką gamę materiałów do druku UV – od ścian i podłóg po tekstylia.",
-  categories = CATEGORIES,
-}: {
-  title?: string;
-  intro?: string;
-  categories?: Category[];
-}) {
+export default function Surfaces() {
   return (
     <section aria-labelledby="materials-heading">
       <div className="container mx-auto px-5 py-5 overflow-hidden md:px-10">
@@ -81,19 +124,12 @@ export default function Surfaces({
         </header>
 
         <div className="space-y-12 md:px-8 lg:px-12">
-          {categories.map((cat) => (
+          {/* {categories.map((cat) => (
             <section
               key={cat.name}
               aria-labelledby={`cat-${slugify(cat.name)}`}
               className=" lg:w-[95%] mx-auto xl:w-[80%]"
             >
-              <h3
-                id={`cat-${slugify(cat.name)}`}
-                className="text-2xl text-start font-semibold mb-6 text-black/80"
-              >
-                {cat.name}
-              </h3>
-
               <div className=" flex flex-wrap items-start justify-evenly gap-4 ">
                 {cat.items.map((item) => (
                   <figure key={`${cat.name}-${item.label}`} className="group  ">
@@ -110,12 +146,14 @@ export default function Surfaces({
                     <figcaption className="mt-2  text-md text-center font-medium mx-auto text-black/80 w-24">
                       {item.label}
                     </figcaption>
-                    {/* focus ring dla dostępności gdy figura jest fokusowalna (np. jeśli zrobisz z niej Link) */}
                   </figure>
                 ))}
               </div>
             </section>
-          ))}
+          ))} */}
+          <div className="h-[20rem] md:h-[40rem] [perspective:1000px]  relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-40">
+            <Tabs tabs={surfaces} />
+          </div>
         </div>
       </div>
     </section>
