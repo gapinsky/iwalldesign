@@ -57,17 +57,17 @@ const surfaces = [
     title: "Ściany",
     value: "walls",
     content: (
-      <div className="w-full overflow-hidden relative h-full rounded-md  text-xl border-2  md:text-4xl font-bold bg-white shadow-lg">
-        <div className="flex flex-col h-full  bg-black/30">
+      <div className="w-full p-10 space-y-5 overflow-hidden relative h-full rounded-xl  text-xl  md:text-4xl font-bold bg-white">
+        <div className="flex  h-full gap-8 ">
           {categories["ściany"].map((item) => (
             <motion.div
-              initial={{ height: "100%" }}
-              whileHover={{ height: "700%" }}
+              initial={{ width: "100%" }}
+              whileHover={{ width: "300%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               key={item.label}
-              className="relative   w-full h-full  overflow-hidden "
+              className="relative   w-full h-full  overflow-hidden  rounded-md "
             >
-              <div className="w-full h-full absolute left-0 top-0 bg-gradient-to-tr from-black/40 via-black/20 to-transparent  z-10 "></div>
+              <div className="w-full h-full absolute left-0 top-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent  z-10 "></div>
               <Image
                 src={item.img}
                 alt={item.label}
@@ -76,7 +76,7 @@ const surfaces = [
                 sizes="(max-width: 120px) 70vw, (max-width: 1400px) 70vw, 70vw"
                 priority={false}
               />
-              <p className="absolute left-4 bottom-2 text-lg   md:text-3xl md:left-10 md:bottom-10  text-white/90 z-20  text-shadow-md ">
+              <p className="absolute left-4 bottom-4 text-lg   md:text-2xl text-wrap max-w-[60%]  text-white/90 z-20   ">
                 {item.label}
               </p>
             </motion.div>
@@ -89,17 +89,17 @@ const surfaces = [
     title: "Podłogi",
     value: "floors",
     content: (
-      <div className="w-full overflow-hidden relative h-full rounded-md  text-xl border-2  md:text-4xl font-bold bg-white shadow-lg">
-        <div className="flex flex-col h-full  bg-black/30">
+      <div className="w-full p-10 space-y-5 overflow-hidden relative h-full rounded-xl  text-xl  md:text-4xl font-bold bg-white">
+        <div className="flex  h-full gap-8 ">
           {categories["podłogi"].map((item) => (
             <motion.div
-              initial={{ height: "100%" }}
-              whileHover={{ height: "700%" }}
+              initial={{ width: "100%" }}
+              whileHover={{ width: "300%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               key={item.label}
-              className="relative   w-full h-full  overflow-hidden "
+              className="relative   w-full h-full  overflow-hidden  rounded-md "
             >
-              <div className="w-full h-full absolute left-0 top-0 bg-gradient-to-tr from-black/40 via-black/20 to-transparent  z-10 "></div>
+              <div className="w-full h-full absolute left-0 top-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent  z-10 "></div>
               <Image
                 src={item.img}
                 alt={item.label}
@@ -108,7 +108,7 @@ const surfaces = [
                 sizes="(max-width: 120px) 70vw, (max-width: 1400px) 70vw, 70vw"
                 priority={false}
               />
-              <p className="absolute left-4 bottom-2 text-lg   md:text-3xl md:left-10 md:bottom-10  text-white/90 z-20  text-shadow-md ">
+              <p className="absolute left-4 bottom-4 text-lg   md:text-2xl text-wrap max-w-[50%]  text-white/90 z-20   ">
                 {item.label}
               </p>
             </motion.div>
@@ -121,17 +121,17 @@ const surfaces = [
     title: "Tekstylia",
     value: "textile",
     content: (
-      <div className="w-full overflow-hidden relative h-full rounded-md  text-xl border-2  md:text-4xl font-bold bg-white shadow-lg">
-        <div className="flex flex-col h-full  bg-black/30">
+      <div className="w-full p-10 space-y-5 overflow-hidden relative h-full rounded-xl  text-xl  md:text-4xl font-bold bg-white">
+        <div className="flex  h-full gap-8 ">
           {categories["tekstylia"].map((item) => (
             <motion.div
-              initial={{ height: "100%" }}
-              whileHover={{ height: "700%" }}
+              initial={{ width: "100%" }}
+              whileHover={{ width: "300%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               key={item.label}
-              className="relative   w-full h-full  overflow-hidden "
+              className="relative   w-full h-full  overflow-hidden  rounded-md "
             >
-              <div className="w-full h-full absolute left-0 top-0 bg-gradient-to-tr from-black/40 via-black/20 to-transparent  z-10 "></div>
+              <div className="w-full h-full absolute left-0 top-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent  z-10 "></div>
               <Image
                 src={item.img}
                 alt={item.label}
@@ -140,7 +140,7 @@ const surfaces = [
                 sizes="(max-width: 120px) 70vw, (max-width: 1400px) 70vw, 70vw"
                 priority={false}
               />
-              <p className="absolute left-4 bottom-2 text-lg   md:text-3xl md:left-10 md:bottom-10  text-white/90 z-20  text-shadow-md ">
+              <p className="absolute left-4 bottom-4 text-lg   md:text-2xl text-wrap max-w-[50%]  text-white/90 z-20   ">
                 {item.label}
               </p>
             </motion.div>
@@ -162,7 +162,7 @@ export default function Surfaces() {
           >
             Drukujemy na każdej <ShinyWord>powierzchni</ShinyWord>
           </h2>
-          <p className="text-black/70 mt-5 text-start xl:text-xl mb-10">
+          <p className="text-black/70 mt-5 text-start xl:text-xl mb-20">
             Poznaj szeroką gamę materiałów do druku UV – od ścian i podłóg po
             tekstylia. Oferujemy nadruki na betonie, cegle, parkiecie, panelach
             winylowych, bawełnie, poliestrze i wielu innych powierzchniach.
@@ -170,7 +170,7 @@ export default function Surfaces() {
         </header>
 
         <div className="space-y-12   ">
-          <div className="h-[20rem] md:h-[40rem] [perspective:400px] md:[perspective:1000px]  relative  flex flex-col  mx-auto w-full  items-start justify-start mb-40">
+          <div className="h-[20rem] md:h-[20rem] [perspective:400px] md:[perspective:1000px]  relative  flex flex-col  mx-auto w-full  items-start justify-start mb-40">
             <Tabs tabs={surfaces} />
           </div>
         </div>
