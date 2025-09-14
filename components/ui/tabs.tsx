@@ -40,7 +40,7 @@ export const Tabs = ({
     <>
       <div
         className={cn(
-          "flex flex-row items-center gap-2 p-2 rounded-md w-fit justify-center [perspective:500px] relative overflow-hidden  mx-auto",
+          "flex flex-row items-center gap-2 p-2 rounded-md w-fit justify-center [perspective:100px] relative overflow-hidden  mx-auto",
           containerClassName
         )}
       >
@@ -114,7 +114,7 @@ export const FadeInDiv = ({
           layoutId={tab.value}
           style={{
             scale: 1 - idx * 0.1,
-            top: hovering ? idx * -50 : 0,
+            top: hovering ? idx * -60 : 0,
             zIndex: -idx,
             opacity: idx < 3 ? 1 - idx * 0.1 : 0,
           }}

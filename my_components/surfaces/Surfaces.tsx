@@ -170,7 +170,7 @@ export default function Surfaces() {
         </header>
 
         <div className="space-y-12   ">
-          <div className="h-[20rem] md:h-[20rem] [perspective:400px] md:[perspective:1000px]  relative  flex flex-col  mx-auto w-full  items-start justify-start mb-40">
+          <div className="h-[20rem] md:h-[20rem] [perspective:10000px]   relative  flex flex-col  mx-auto w-full  items-start justify-start mb-40">
             <Tabs tabs={surfaces} />
           </div>
         </div>
