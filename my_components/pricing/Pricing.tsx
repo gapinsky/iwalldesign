@@ -1,6 +1,7 @@
 import React from "react";
 import { ShinyWord } from "../navbar/ShinyWord";
 import PriceCard from "./PriceCard";
+import { Send } from "lucide-react";
 
 const PricingCardsInfo = [
   {
@@ -66,6 +67,18 @@ function Pricing() {
               unit={card.unit}
             />
           ))}
+        </div>
+        <div className="space-y-4 text-center mt-16 max-w-3xl mx-auto">
+          <p className="text-2xl">Masz nieszablonowy projekt?</p>
+          <p className="mb-8">
+            Dla nas nie ma rzeczy niemożliwych! Każdy pomysł traktujemy jako
+            wyzwanie, które zamieniamy w wyjątkową realizację. Skontatuj się z
+            nami i uzyskaj indywidualną ofertę dopasowaną do Twoich potrzeb.
+          </p>
+          <button className="group inline-flex gap-1 border-2 border-emerald-500 text-emerald-500 px-6 py-3 rounded-sm shadow-md font-semibold hover:cursor-pointer hover:shadow-lg transition-shadow duration-75">
+            Napisz wiadomość!{" "}
+            <Send className="transition-transform duration-75  group-hover:translate-x-3" />
+          </button>
         </div>
       </div>
     </section>

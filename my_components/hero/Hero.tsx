@@ -14,7 +14,7 @@ import { ShinyWord } from "../navbar/ShinyWord";
 export default function Hero() {
   return (
     <section className="bg-white " aria-labelledby="hero-heading">
-      <div className="p-5  container mx-auto  flex flex-col items-center justify-center  gap-10 md:flex-row md:justify-evenly md:gap-20 md:px-10  xl:justify-between">
+      <div className="p-5  container mx-auto  flex flex-col items-center justify-center  gap-10 md:flex-row md:justify-evenly md:gap-20 md:px-10  xl:justify-between ">
         {/* Text */}
         <div className="w-[95%] space-y-2 lg:max-w-[600px] xl:space-y-4 ">
           <p className="inline-flex justify-start items-center text-sm text-black/70 bg-[#16B1C2]/30  w-fit px-2 py-1 border-2 border-[#16B1C2]/50 rounded-sm">

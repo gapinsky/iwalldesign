@@ -8,7 +8,7 @@ function BeforeAfter() {
     <section className="bg-white " aria-labelledby="hero-heading">
       <div className="container  p-5 mx-auto  flex flex-col-reverse items-center justify-center gap-10 md:gap-5  md:px-10 lg:flex-row lg:items-start lg:gap-10 xl:justify-evenly xl:gap-50">
         <CompareBlock />
-        <div className="w-full border-2 ">
+        <div className="w-full ">
           <h2 className=" text-3xl font-semibold lg:text-4xl xl:text-5xl">
             Nowoczesny <ShinyWord>druk UV</ShinyWord> bez ograniczeń
           </h2>
