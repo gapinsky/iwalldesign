@@ -56,7 +56,7 @@ function Pricing() {
           tylko uczciwe i przejrzyste, ale też realnie dopasowane do Twoich
           potrzeb.
         </p>
-        <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3 items-stretch justify-items-center ">
+        <div className="mt-10 grid grid-cols-1 gap-12 justify-items-center lg:grid-cols-3  ">
           {PricingCardsInfo.map((card) => (
             <PriceCard
               key={card.title}

@@ -57,12 +57,12 @@ const surfaces = [
     title: "Ściany",
     value: "walls",
     content: (
-      <div className="w-full p-10 space-y-5 overflow-hidden relative h-full rounded-xl  text-xl  md:text-4xl font-bold bg-white">
-        <div className="flex  h-full gap-8 ">
+      <div className="w-full p-5 lg:p-10 space-y-5 overflow-hidden relative h-full rounded-xl  text-xl   font-bold bg-white">
+        <div className="flex flex-col h-full gap-2 lg:gap-8 ">
           {categories["ściany"].map((item) => (
             <motion.div
               initial={{ width: "100%" }}
-              whileHover={{ width: "300%" }}
+              whileHover={{ width: "lg:300%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               key={item.label}
               className="relative   w-full h-full  overflow-hidden  rounded-md "
@@ -76,7 +76,7 @@ const surfaces = [
                 sizes="(max-width: 120px) 70vw, (max-width: 1400px) 70vw, 70vw"
                 priority={false}
               />
-              <p className="absolute left-4 bottom-4 text-lg   md:text-2xl text-wrap max-w-[60%]  text-white/90 z-20   ">
+              <p className="absolute left-2 bottom-2 text-lg  md:text-2xl text-wrap max-w-[60%]  text-white/90 z-20   ">
                 {item.label}
               </p>
             </motion.div>
@@ -170,7 +170,7 @@ export default function Surfaces() {
         </header>
 
         <div className="space-y-12   ">
-          <div className="h-[20rem] md:h-[20rem] [perspective:10000px]   relative  flex flex-col  mx-auto w-full  items-start justify-start mb-40">
+          <div className="h-[40rem] md:h-[20rem] [perspective:10000px]   relative  flex flex-col  mx-auto w-full  items-start justify-start mb-40">
             <Tabs tabs={surfaces} />
           </div>
         </div>

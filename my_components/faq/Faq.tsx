@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 
 import { CircleQuestionMark, Mail, Phone } from "lucide-react";
+import FaqAnimateImage from "./FaqAnimateImage";
 function Faq() {
   return (
     <section className="bg-white " aria-labelledby="faq">
@@ -15,34 +16,14 @@ function Faq() {
         <h2 className="text-center text-3xl font-semibold lg:text-4xl xl:text-5xl">
           Najczęściej zadawane <ShinyWord>pytania</ShinyWord>
         </h2>
-        <p className="text-center text-black/70 mt-5 xl:text-xl max-w-[70%] mx-auto">
+        <p className="text-center text-black/70 mt-5 xl:text-xl max-w-[90%] md:max-w-[80%] mx-auto">
           Nie jesteś pewien, czy druk UV to rozwiązanie dla Ciebie? Zebraliśmy
           odpowiedzi na najczęstsze pytania klientów, aby rozwiać Twoje
           wątpliwości.
         </p>
-        <div className="grid grid-cols-2  justify-items-center gap-16  mt-16 border-2 ">
-          <div>
-            <div className="relative max-w-sm aspect-square rounded-md overflow-hidden shadow-md">
-              <Image
-                src="/assets/images/faq/faq.png"
-                alt="faq"
-                fill
-                className="object-cover"
-                sizes="(max-width: 120px) 70vw, (max-width: 1400px) 70vw, 70vw"
-                priority={false}
-              />
-            </div>
-            <div className="w-fit flex flex-col space-y-4">
-              <p className=" text-xl  text-black/80">
-                Skontaktuj się z nami bezpośrednio
-              </p>
-              <p className="inline-flex items-center gap-2  ">
-                <Mail /> example@mail.com
-              </p>
-              <p className="inline-flex items-center gap-2  ">
-                <Phone /> 123 456 789
-              </p>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2  justify-items-center gap-16  mt-16 border-2 ">
+          <div className="border-2 border-red-500 w-full ">
+            <FaqAnimateImage />
           </div>
           <div className="w-full  ">
             <Accordion
@@ -51,10 +32,10 @@ function Faq() {
               defaultValue="item-1"
               className=" w-full "
             >
-              <AccordionItem value="item-1" className=" rounded-md p-3 ">
-                <AccordionTrigger className="text-lg  w-full hover:cursor-pointer text-black/90">
+              <AccordionItem value="item-1" className=" rounded-md  p-2">
+                <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
                   <h4 className="inline-flex items-center gap-4 ">
-                    <CircleQuestionMark className="mt-0.5" />
+                    <CircleQuestionMark className="mt-0.5 h-5 w-5 shrink-0 " />
                     Czy druk UV jest trwały i odporny na uszkodzenia?
                   </h4>
                 </AccordionTrigger>
@@ -68,9 +49,9 @@ function Faq() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2" className=" rounded-md p-2 ">
-                <AccordionTrigger className="text-lg  w-full hover:cursor-pointer text-black/90">
+                <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
                   <h4 className="inline-flex items-center gap-4 ">
-                    <CircleQuestionMark className="mt-0.5" />
+                    <CircleQuestionMark className="mt-0.5 h-5 w-5 shrink-0" />
                     Ile czasu trwa realizacja zamówienia na druk UV?
                   </h4>
                 </AccordionTrigger>
@@ -85,9 +66,9 @@ function Faq() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3" className=" rounded-md p-2 ">
-                <AccordionTrigger className="text-lg  w-full hover:cursor-pointer text-black/90">
+                <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
                   <h4 className="inline-flex items-center gap-4 ">
-                    <CircleQuestionMark className="mt-0.5" />
+                    <CircleQuestionMark className="mt-0.5 h-5 w-5 shrink-0" />
                     Na jakim obszarze realizujecie usługi druku UV?
                   </h4>
                 </AccordionTrigger>
@@ -99,9 +80,9 @@ function Faq() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-4" className=" rounded-md p-2 ">
-                <AccordionTrigger className="text-lg  w-full hover:cursor-pointer text-black/90">
+                <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
                   <h4 className="inline-flex items-center gap-4 ">
-                    <CircleQuestionMark className="mt-0.5" />
+                    <CircleQuestionMark className="mt-0.5 h-5 w-5 shrink-0" />
                     Czy mogę zamówić nadruk UV z własnym projektem graficznym?
                   </h4>
                 </AccordionTrigger>
@@ -115,9 +96,9 @@ function Faq() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-5" className=" rounded-md p-2 ">
-                <AccordionTrigger className="text-lg  w-full hover:cursor-pointer text-black/90">
+                <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
                   <h4 className="inline-flex items-center gap-4 ">
-                    <CircleQuestionMark className="mt-0.5" />
+                    <CircleQuestionMark className="mt-0.5 h-5 w-5 shrink-0" />
                     Czy druk UV jest bezpieczny i ekologiczny?
                   </h4>
                 </AccordionTrigger>
@@ -133,9 +114,9 @@ function Faq() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-6" className=" rounded-md p-2 ">
-                <AccordionTrigger className="text-lg  w-full hover:cursor-pointer text-black/90">
+                <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
                   <h4 className="inline-flex items-center gap-4 ">
-                    <CircleQuestionMark className="mt-0.5" />
+                    <CircleQuestionMark className="mt-0.5 h-5 w-5 shrink-0" />
                     Czy nadruki UV są odporne na warunki zewnętrzne?
                   </h4>
                 </AccordionTrigger>
@@ -150,9 +131,9 @@ function Faq() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-7" className=" rounded-md p-2 ">
-                <AccordionTrigger className="text-lg  w-full hover:cursor-pointer text-black/90">
+                <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
                   <h4 className="inline-flex items-center gap-4 ">
-                    <CircleQuestionMark className="mt-0.5" />
+                    <CircleQuestionMark className="mt-0.5 h-5 w-5 shrink-0" />
                     Jak przygotować pliki do druku UV?
                   </h4>
                 </AccordionTrigger>
@@ -166,9 +147,9 @@ function Faq() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-8" className=" rounded-md p-2 ">
-                <AccordionTrigger className="text-lg  w-full hover:cursor-pointer text-black/90">
+                <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
                   <h4 className="inline-flex items-center gap-4 ">
-                    <CircleQuestionMark className="mt-0.5" />
+                    <CircleQuestionMark className="mt-0.5 h-5 w-5 shrink-0" />
                     Czy mogę zamówić próbkę nadruku UV przed większym nakładem?
                   </h4>
                 </AccordionTrigger>
