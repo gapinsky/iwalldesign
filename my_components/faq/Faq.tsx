@@ -7,12 +7,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import { CircleQuestionMark, Mail, Phone } from "lucide-react";
+import { CircleQuestionMark } from "lucide-react";
 import FaqAnimateImage from "./FaqAnimateImage";
+
 function Faq() {
   return (
-    <section className="bg-white " aria-labelledby="faq">
-      <div className="container  p-5 mx-auto ">
+    <section className="bg-white" aria-labelledby="faq">
+      <div className="container  p-5 mx-auto">
         <h2 className="text-center text-3xl font-semibold lg:text-4xl xl:text-5xl">
           Najczęściej zadawane <ShinyWord>pytania</ShinyWord>
         </h2>
@@ -21,8 +22,8 @@ function Faq() {
           odpowiedzi na najczęstsze pytania klientów, aby rozwiać Twoje
           wątpliwości.
         </p>
-        <div className="grid grid-cols-1 lg:grid-cols-2  justify-items-center gap-16  mt-16 border-2 ">
-          <div className="border-2 border-red-500 w-full ">
+        <div className="grid grid-cols-1 lg:grid-cols-2  justify-items-center gap-16  mt-16  ">
+          <div className="w-full">
             <FaqAnimateImage />
           </div>
           <div className="w-full  ">
@@ -30,7 +31,7 @@ function Faq() {
               type="single"
               collapsible
               defaultValue="item-1"
-              className=" w-full "
+              className="w-full"
             >
               <AccordionItem value="item-1" className=" rounded-md  p-2">
                 <AccordionTrigger className="  w-full hover:cursor-pointer text-black/90">
