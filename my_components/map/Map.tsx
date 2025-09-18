@@ -1,47 +1,46 @@
+import { Mail, MapPin, Phone } from "lucide-react";
 import { ShinyWord } from "../navbar/ShinyWord";
 
 export default function Map() {
   return (
-    <section
-      className="bg-gradient-to-b bg-gray-300 to-white"
-      aria-labelledby="lokalizacja-heading"
-    >
+    <section className="" aria-labelledby="lokalizacja-heading">
       <div className="container p-5 mx-auto">
-        <div className="grid items-start gap-8 lg:grid-cols-2">
-          <div>
-            <h2
-              id="lokalizacja-heading"
-              className="text-3xl font-semibold lg:text-4xl xl:text-5xl"
-            >
-              Twój partner w druku UV –{" "}
-              <ShinyWord>Koszalin i okolice</ShinyWord>
-            </h2>
+        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:items-start">
+          <div className="flex flex-col items-start justify-between md:h-full ">
+            <div>
+              <h2
+                id="lokalizacja-heading"
+                className="text-3xl font-semibold lg:text-4xl xl:text-5xl"
+              >
+                Twój partner w druku UV –{" "}
+                <ShinyWord>Koszalin i okolice</ShinyWord>
+              </h2>
+              <p className="text-black/70 mt-2  xl:text-xl lg:mt-5 lg:max-w-[80%]">
+                Działamy na terenie Koszalina, Kołobrzegu, Białogardu, Darłowa,
+                Szczecinka i całego województwa zachodniopomorskiego.
+                Niezależnie, czy potrzebujesz nadruku w domu, biurze czy
+                przestrzeni publicznej – jesteśmy blisko Ciebie.
+              </p>
+            </div>
 
-            <p className="text-black/70 mt-5 xl:text-xl">
-              Działamy na terenie Koszalina, Kołobrzegu, Białogardu, Darłowa,
-              Szczecinka i całego województwa zachodniopomorskiego. Niezależnie,
-              czy potrzebujesz nadruku w domu, biurze czy przestrzeni publicznej
-              – jesteśmy blisko Ciebie.
-            </p>
-
-            <address className="not-italic mt-6 text-black/80 leading-relaxed">
-              <div>ul. Drukarek 5</div>
-              <div>Koszalin</div>
-              <div>75-000</div>
+            <address className=" text-black/80 leading-relaxed space-y-2 text-sm lg:text-xl">
+              <div className="font-semibold flex gap-2 items-center ">
+                <MapPin className="text-emerald-500" />
+                ul. Drukarek 5 Koszalin 75-000
+              </div>
+              <div className="font-semibold flex gap-2 items-center ">
+                <Phone className="text-emerald-500" />
+                123 456 789
+              </div>
+              <div className="font-semibold flex gap-2 items-center ">
+                <Mail className="text-emerald-500" />
+                iwalldesign@mail.com
+              </div>
             </address>
           </div>
 
           <div className="w-full">
-            <div className="mb-3">
-              <a
-                href="https://maps.google.com/?q=Koszalin"
-                className="inline-block rounded-md border px-3 py-1 text-sm hover:bg-gray-50 transition"
-              >
-                Wyświetl większą mapę
-              </a>
-            </div>
-            <div className="relative w-full overflow-hidden rounded-md shadow">
-              <div className="pt-[56.25%]" />
+            <div className="relative w-full overflow-hidden rounded-md shadow aspect-square md:max-h-[400px]">
               <iframe
                 title="Mapa Koszalina"
                 aria-label="Mapa Koszalina"
