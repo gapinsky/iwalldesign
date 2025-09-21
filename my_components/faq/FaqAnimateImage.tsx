@@ -42,7 +42,7 @@ export default function FaqAnimateImage() {
   return (
     <motion.div
       ref={ref}
-      className="relative w-full  mx-auto aspect-square overflow-hidden"
+      className="relative w-full  mx-auto aspect-square "
       initial="hidden"
       whileInView="visible"
       viewport={{ amount: 0.3, once: true }}
@@ -99,7 +99,7 @@ export default function FaqAnimateImage() {
       <motion.div className="absolute inset-0" style={{ y: yQ }}>
         {/* drop-in sterowany wariantem */}
         <motion.div
-          className="absolute inset-0"
+          className="absolute inset-0 "
           variants={dropIn}
           custom={3}
           // koniec wariantu visible odpala bounce
@@ -107,6 +107,7 @@ export default function FaqAnimateImage() {
             if (def === "visible") {
               qControls.start({
                 y: [0, -6, 0],
+                scale: [1, 1.03, 1],
                 transition: {
                   delay: 0.5,
                   duration: 2,
