@@ -37,7 +37,7 @@ export default function GalleryGrid({ cards }: Props) {
   return (
     <div className="w-full mx-auto">
       {/* GRID: mobile 1, md 2, lg/xl 3; na xl używamy 12 kolumn dla wsparcia col-span-* */}
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 xl:grid-flow-dense">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 xl:grid-flow-dense ">
         {cards.map((card) => (
           <div
             key={card.id}

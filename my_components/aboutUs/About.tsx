@@ -1,64 +1,132 @@
 import Image from "next/image";
 import { ShinyWord } from "../navbar/ShinyWord";
 import StatCard from "./StatCard";
+import Title from "../assets/Title";
+import Container from "../assets/Container";
+import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
+
+const images = [
+  {
+    name: "zdjecie",
+    src: "/assets/images/about/about.png",
+  },
+  {
+    name: "zdjecie",
+    src: "/assets/images/about/about.png",
+  },
+  {
+    name: "zdjecie",
+    src: "/assets/images/about/about.png",
+  },
+  {
+    name: "zdjecie",
+    src: "/assets/images/about/about.png",
+  },
+  {
+    name: "zdjecie",
+    src: "/assets/images/about/about.png",
+  },
+];
+
+const content = {
+  titleId: "o-nas-tytuł",
+  leadId: "o-nas-opis",
+  description:
+    "Specjalizujemy się w druku UV na ścianach, podłogach i odzieży w Koszalinie i okolicy. Łączymy technologię z estetyką, żeby wnętrza i oznakowanie wyglądały świetnie i były trwałe.",
+};
 
 export default function AboutSection() {
   return (
     <section
-      id="about"
-      aria-labelledby="about-title"
-      className="bg-white  border-2 "
+      id="o-nas"
+      aria-labelledby={content.titleId}
+      aria-describedby={content.leadId}
     >
-      <div className="container  p-5 mx-auto  grid grid-cols-1 gap-10   md:grid-cols-2 md:px-10 xl:gap-50">
-        <div className="space-y-6 order-2  md:order-0 xl:order-1">
-          <figure className="relative   overflow-hidden rounded-md">
-            <div className="relative aspect-[4/3] w-full ">
-              <Image
-                src="/assets/about.png"
-                alt="Zespół WallDesign obsługuje maszynę do druku UV"
-                fill
-                priority
-                className="object-cover "
-                sizes="(min-width: 1024px) 640px, 100vw"
-              />
+      <Container>
+        {/* <header className="mb-10">
+          <h2
+            id="o-nas-tytuł"
+            className="text-3xl font-semibold leading-tight md:text-4xl"
+          >
+            Kim jesteśmy? <span className="text-emerald-600">Poznaj nas</span>
+          </h2>
+          <p className="mt-3 max-w-prose text-neutral-700">
+            Specjalizujemy się w druku UV na ścianach, podłogach i odzieży w
+            Koszalinie i okolicy. Łączymy technologię z estetyką, żeby wnętrza i
+            oznakowanie wyglądały świetnie i były trwałe.
+          </p>
+        </header> */}
+        <div className="grid items-start gap-10 md:grid-cols-2">
+          {/* LEWA KOLUMNA – tekst */}
+          <div className="space-y-6 border-2">
+            <Title
+              titleId={content.titleId}
+              lead={content.leadId}
+              description={content.description}
+            >
+              Kim jesteśmy? <ShinyWord>Poznaj nas</ShinyWord>
+            </Title>
+            <p className="max-w-prose text-neutral-800">
+              Każdy projekt prowadzimy indywidualnie – od konsultacji i doboru
+              materiałów po montaż. Dbamy o kolory, detale i terminowość.
+            </p>
+
+            <ul className="space-y-3">
+              <li className="flex items-start gap-3">
+                <span
+                  aria-hidden
+                  className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white text-xs"
+                >
+                  ✓
+                </span>
+                <p>
+                  Druk bezpośrednio na różnych powierzchniach: ściany, szkło,
+                  drewno, metal, tkaniny.
+                </p>
+              </li>
+              <li className="flex items-start gap-3">
+                <span
+                  aria-hidden
+                  className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white text-xs"
+                >
+                  ✓
+                </span>
+                <p>
+                  Wysoka trwałość i odwzorowanie kolorów dzięki technologii UV.
+                </p>
+              </li>
+              <li className="flex items-start gap-3">
+                <span
+                  aria-hidden
+                  className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white text-xs"
+                >
+                  ✓
+                </span>
+                <p>Pełne wsparcie: projekt, produkcja, montaż.</p>
+              </li>
+            </ul>
+
+            <div className="pt-2">
+              <a
+                href="#kontakt"
+                className="inline-flex items-center justify-center rounded-md bg-emerald-600 px-5 py-2.5 text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              >
+                Umów bezpłatną konsultację
+              </a>
             </div>
-            <figcaption className="absolute left-3 top-3 rounded-md bg-black/60 px-2.5 py-1 text-xs font-medium text-white backdrop-blur">
-              Zespół iWallDesign
-            </figcaption>
-          </figure>
-          <div className="grid grid-cols-2 gap-6 ">
-            <StatCard title="500+" description="Zrealizowanych projektów" />
-            <StatCard title="100%" description="Zadowolonych klientów" />
-            <StatCard title="8/10" description="Klientów wraca po więcej" />
-            <StatCard title="101%" description="Kreatywności i pasji" />
+          </div>
+
+          {/* PRAWA KOLUMNA – obraz + statystyki */}
+          <div className="space-y-6 border-2">
+            <div>
+              <AnimatedTestimonials testimonials={images} />
+            </div>
+
+            {/* Statystyki jako definicje */}
+            <StatCard />
           </div>
         </div>
-
-        <div className="space-y-4 text-black/90 xl:text-xl ">
-          <h2 className="text-3xl font-semibold text-black lg:text-4xl xl:text-5xl mb-6 xl:mb-12">
-            Kim jesteśmy? <ShinyWord>Poznaj nas!</ShinyWord>
-          </h2>
-          <p className="tracking-wide   xl:pb-6">
-            Specjalizujemy się w druku UV na ścianach, podłogach i odzieży w{" "}
-            <span className="text-blue-600 font-semibold">
-              Koszalinie, Białogardzie, Kołobrzegu i okolicach
-            </span>
-            . Nasza technologia pozwala tworzyć trwałe nadruki bezpośrednio na
-            różnych powierzchniach – od gładkich ścian, przez beton i płytki, aż
-            po tkaniny i elementy dekoracyjne.
-          </p>
-          <p className="tracking-wide  xl:pb-6">
-            Każdy projekt realizujemy indywidualnie, dbając o najwyższą jakość
-            kolorów i detali. Dzięki doświadczeniu i nowoczesnym maszynom
-            zamieniamy zwykłe wnętrza w przestrzenie pełne charakteru.
-          </p>
-          <p className="tracking-wide">
-            Zaufało nam już wielu klientów prywatnych i firmowych z regionu.
-            Jeśli szukasz profesjonalnego nadruku ściennego w Koszalinie lub
-            okolicy – jesteś we właściwym miejscu.
-          </p>
-        </div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -1,5 +1,6 @@
 import About from "@/my_components/aboutUs/About";
 import BeforeAfter from "@/my_components/beforeAfter/BeforeAfter";
+import Contact from "@/my_components/contact/ContactForm";
 import Faq from "@/my_components/faq/Faq";
 import Hero from "@/my_components/hero/Hero";
 import Map from "@/my_components/map/Map";
@@ -12,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="mt-20 lg:space-y-16">
+      <main className="mt-20 lg:space-y-24">
         <Hero />
         <BeforeAfter />
         <About />
@@ -22,6 +23,7 @@ export default function Home() {
         <Map />
         <Pricing />
         <Faq />
+        <Contact />
       </main>
     </>
   );

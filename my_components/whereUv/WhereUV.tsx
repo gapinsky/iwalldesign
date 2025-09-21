@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import CardWhere from "./CardWhere";
 import { ShinyWord } from "../navbar/ShinyWord";
+import Title from "../assets/Title";
+import Container from "../assets/Container";
 
 const CardsInfo = [
   {
@@ -58,11 +60,11 @@ const CardsInfo = [
 function WhereUV() {
   return (
     <section id="about" aria-labelledby="about-title" className="bg-white   ">
-      <div className="container  p-5 mx-auto flex flex-col  ">
-        <div className=" mb-5">
-          <h2 className=" text-3xl font-semibold lg:text-4xl xl:text-5xl">
+      <Container>
+        <div className=" mb-5 border-2">
+          <Title id="gdzie-sprawdza-się-druk-uv-tytuł">
             Gdzie <ShinyWord>druk UV</ShinyWord> sprawdza się najlepiej?
-          </h2>
+          </Title>
           <p className="  text-black/70 mt-5 xl:text-xl  mb-10">
             Od domowych wnętrz po przestrzenie publiczne – druk UV nadaje
             wyjątkowy charakter każdemu miejscu. Niezależnie, czy chodzi o
@@ -70,7 +72,7 @@ function WhereUV() {
             podkreślają design i budują niezapomniane wrażenia.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-10 justify-items-center  md:grid-cols-2 md:px-10 lg:grid-cols-3  ">
+        <div className="border-2 grid grid-cols-1 gap-10 justify-items-center  md:grid-cols-2  lg:grid-cols-3 lg:gap-16 ">
           {CardsInfo.map((card) => (
             <CardWhere
               key={card.title}
@@ -81,7 +83,7 @@ function WhereUV() {
             />
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -2,6 +2,24 @@
 @import "tw-animate-css";
 
 /* @custom-variant dark (&:is(.dark *)); */
+.scroller {
+  --animation-direction: forwards;
+  --animation-duration: 40s;
+}
+
+.animate-scroll {
+  animation: scroll var(--animation-duration) linear infinite;
+  animation-direction: var(--animation-direction);
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  } /* gap-4 = 1rem */
+}
 
 @theme inline {
   --color-background: var(--background);

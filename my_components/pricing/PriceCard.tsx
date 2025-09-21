@@ -11,7 +11,7 @@ type Props = {
 
 function PriceCard({ image, title, price, pros, unit }: Props) {
   return (
-    <div className="flex flex-col justify-between  rounded-md shadow-md w-full max-w-sm h-full hover:-translate-y-3 hover:shadow-xl transition-all duration-75 ease-out">
+    <div className="flex flex-col justify-between  rounded-md shadow-md w-full  h-full hover:-translate-y-3 hover:shadow-xl transition-all duration-75 ease-out">
       <div className="w-full h-48 overflow-hidden ">
         <Image
           src={image}
@@ -26,7 +26,7 @@ function PriceCard({ image, title, price, pros, unit }: Props) {
 
       <div className="flex flex-col flex-1 pt-2 pb-4 px-6 ">
         <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 ">
+        <p className="text-2xl md:text-3xl  font-bold mb-4 ">
           od {price}zł
           <span className="text-black/30 font-medium text-lg"> /{unit}</span>
         </p>

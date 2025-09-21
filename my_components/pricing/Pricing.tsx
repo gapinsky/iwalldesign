@@ -2,6 +2,8 @@ import React from "react";
 import { ShinyWord } from "../navbar/ShinyWord";
 import PriceCard from "./PriceCard";
 import { Send } from "lucide-react";
+import Title from "../assets/Title";
+import Container from "../assets/Container";
 
 const PricingCardsInfo = [
   {
@@ -44,19 +46,21 @@ const PricingCardsInfo = [
 function Pricing() {
   return (
     <section className="bg-white " aria-labelledby="pricing">
-      <div className="container  p-5 mx-auto ">
-        <h2 className=" text-3xl font-semibold lg:text-4xl xl:text-5xl">
-          Inwestycja w design która się opłaca! Sprawdź{" "}
-          <ShinyWord>ile kosztuje druk UV.</ShinyWord>
-        </h2>
-        <p className="  text-black/70 mt-5 xl:text-xl">
-          Ceny druku UV różnią się w zależności od rodzaju powierzchni,
-          wielkości nadruku i skomplikowania projektu. Koszty każdej realizacji
-          ustalamy przed rozpoczęciem pracy. Dbamy o to, by nasze ceny były nie
-          tylko uczciwe i przejrzyste, ale też realnie dopasowane do Twoich
-          potrzeb.
-        </p>
-        <div className="mt-10 grid grid-cols-1 gap-12 justify-items-center lg:grid-cols-3  ">
+      <Container>
+        <div className="border-2">
+          <Title id="cennik-tytuł">
+            Inwestycja w design która się opłaca! Sprawdź{" "}
+            <ShinyWord>ile kosztuje druk UV.</ShinyWord>
+          </Title>
+          <p className="  text-black/70 mt-5 xl:text-xl">
+            Ceny druku UV różnią się w zależności od rodzaju powierzchni,
+            wielkości nadruku i skomplikowania projektu. Koszty każdej
+            realizacji ustalamy przed rozpoczęciem pracy. Dbamy o to, by nasze
+            ceny były nie tylko uczciwe i przejrzyste, ale też realnie
+            dopasowane do Twoich potrzeb.
+          </p>
+        </div>
+        <div className="mt-10 grid grid-cols-1 gap-12 xl:gap-36 lg:grid-cols-3  border-2">
           {PricingCardsInfo.map((card) => (
             <PriceCard
               key={card.title}
@@ -80,7 +84,7 @@ function Pricing() {
             <Send className="transition-transform duration-75  group-hover:translate-x-3" />
           </button>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

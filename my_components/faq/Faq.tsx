@@ -9,21 +9,25 @@ import {
 
 import { CircleQuestionMark } from "lucide-react";
 import FaqAnimateImage from "./FaqAnimateImage";
+import Title from "../assets/Title";
+import Container from "../assets/Container";
 
 function Faq() {
   return (
     <section className="bg-white" aria-labelledby="faq">
-      <div className="container  p-5 mx-auto">
-        <h2 className="text-center text-3xl font-semibold lg:text-4xl xl:text-5xl">
-          Najczęściej zadawane <ShinyWord>pytania</ShinyWord>
-        </h2>
-        <p className="text-center text-black/70 mt-5 xl:text-xl max-w-[90%] md:max-w-[80%] mx-auto">
-          Nie jesteś pewien, czy druk UV to rozwiązanie dla Ciebie? Zebraliśmy
-          odpowiedzi na najczęstsze pytania klientów, aby rozwiać Twoje
-          wątpliwości.
-        </p>
+      <Container>
+        <div className="border-2">
+          <Title id="najczęściej-zadawane-pytania-tytuł">
+            Najczęściej zadawane <ShinyWord>pytania</ShinyWord>
+          </Title>
+          <p className=" text-black/70 mt-5 xl:text-xl ">
+            Nie jesteś pewien, czy druk UV to rozwiązanie dla Ciebie? Zebraliśmy
+            odpowiedzi na najczęstsze pytania klientów, aby rozwiać Twoje
+            wątpliwości.
+          </p>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2  justify-items-center gap-16  mt-16  ">
-          <div className="w-full">
+          <div className="w-full border-2 flex items-center">
             <FaqAnimateImage />
           </div>
           <div className="w-full  ">
@@ -166,7 +170,7 @@ function Faq() {
             </Accordion>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

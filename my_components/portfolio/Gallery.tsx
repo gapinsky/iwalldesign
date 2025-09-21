@@ -2,24 +2,26 @@
 import React from "react";
 import GalleryGrid from "./GalleryGrid";
 import { ShinyWord } from "../navbar/ShinyWord";
+import Title from "../assets/Title";
+import Container from "../assets/Container";
 const cards = [
   {
     id: 1,
     content: "Ściana",
     thumbnail: "/assets/images/gallery/gallery1.png",
-    className: "lg:col-span-2  xl:col-span-6 xl:aspect-[8/4]",
+    className: "lg:col-span-2  xl:col-span-4 xl:aspect-[4/2]",
   },
   {
     id: 2,
     content: "Ściana",
     thumbnail: "/assets/images/gallery/gallery2.png",
-    className: "lg:aspect-[4/4] xl:col-span-3 xl:aspect-[4/4]",
+    className: "lg:aspect-[4/4] xl:col-span-4 xl:aspect-[4/2]",
   },
   {
     id: 3,
     content: "Odzież",
     thumbnail: "/assets/images/gallery/gallery3.png",
-    className: "xl:col-span-3 xl:aspect-[4/4]",
+    className: "xl:col-span-4 xl:aspect-[4/2]",
   },
   {
     id: 4,
@@ -31,7 +33,7 @@ const cards = [
     id: 5,
     content: "Podłoga",
     thumbnail: "/assets/images/gallery/gallery5.png",
-    className: "xl:col-span-3 xl:aspect-[4/2] ",
+    className: "xl:col-span-6 xl:aspect-[8/2] ",
   },
   {
     id: 6,
@@ -43,7 +45,7 @@ const cards = [
     id: 7,
     content: "Ściana",
     thumbnail: "/assets/images/gallery/gallery7.png",
-    className: "lg:aspect-[4/3] xl:col-span-3 xl:aspect-[4/2] ",
+    className: "lg:aspect-[4/3] xl:col-span-4 xl:aspect-[4/2] ",
   },
   {
     id: 8,
@@ -56,22 +58,19 @@ const cards = [
     content: "Podłoga",
     thumbnail: "/assets/images/gallery/gallery9.png",
     className:
-      "md:col-span-2 md:aspect-[8/2] lg:col-span-3 lg:aspect-[4/1] xl:col-span-8 xl:aspect-[8/2] ",
+      "md:col-span-2 md:aspect-[8/2] lg:col-span-3 lg:aspect-[4/1] xl:col-span-4 xl:aspect-[4/2] ",
   },
 ];
 
 function Gallery() {
   return (
     <section className="bg-white " aria-labelledby="hero-heading">
-      <div className="container   mx-auto     ">
-        <header className="  w-full">
-          <h2
-            id="materials-heading"
-            className="text-3xl font-semibold lg:text-4xl xl:text-5xl"
-          >
+      <Container>
+        <header className="  w-full border-2 mb-10">
+          <Title id="galeria-tytuł">
             Nasze <ShinyWord>realizacje.</ShinyWord> Zobacz jak Druk UV zmienia
             przestrzeń
-          </h2>
+          </Title>
           <p className="text-black/70 mt-5 text-start xl:text-xl mb-10">
             Każdy projekt to nowa historia – od odważnych nadruków na ścianach,
             przez designerskie podłogi, aż po indywidualne nadruki na odzieży.
@@ -79,10 +78,10 @@ function Gallery() {
             przestrzeń w coś, co budzi emocje i zostaje w pamięci.
           </p>
         </header>
-        <div className="p-5 md:px-10 lg:px-20">
+        <div className="">
           <GalleryGrid cards={cards} />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

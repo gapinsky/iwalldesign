@@ -4,6 +4,8 @@ import Image from "next/image";
 import { ShinyWord } from "../navbar/ShinyWord";
 import { Tabs } from "@/components/ui/tabs";
 import { motion } from "motion/react";
+import Title from "../assets/Title";
+import Container from "../assets/Container";
 
 type Material = { label: string; img: string };
 type Category = {
@@ -145,14 +147,11 @@ const surfaces = [
 export default function Surfaces() {
   return (
     <section aria-labelledby="materials-heading">
-      <div className="container mx-auto px-5 py-5 overflow-hidden md:px-10">
-        <header className=" mx-auto  ">
-          <h2
-            id="materials-heading"
-            className="text-3xl font-semibold lg:text-4xl xl:text-5xl"
-          >
+      <Container>
+        <header className=" mx-auto  border-2">
+          <Title id="powierzchnie-tytuł">
             Drukujemy na każdej <ShinyWord>powierzchni</ShinyWord>
-          </h2>
+          </Title>
           <p className="text-black/70 mt-5 text-start xl:text-xl mb-20">
             Poznaj szeroką gamę materiałów do druku UV – od ścian i podłóg po
             tekstylia. Oferujemy nadruki na betonie, cegle, parkiecie, panelach
@@ -165,7 +164,7 @@ export default function Surfaces() {
             <Tabs tabs={surfaces} />
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

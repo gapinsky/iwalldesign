@@ -1,20 +1,18 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { ShinyWord } from "../navbar/ShinyWord";
+import Title from "../assets/Title";
+import Container from "../assets/Container";
 
 export default function Map() {
   return (
     <section className="" aria-labelledby="lokalizacja-heading">
-      <div className="container p-5 mx-auto">
+      <Container>
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:items-start">
           <div className="flex flex-col items-start justify-between md:h-full ">
             <div>
-              <h2
-                id="lokalizacja-heading"
-                className="text-3xl font-semibold lg:text-4xl xl:text-5xl"
-              >
-                Twój partner w druku UV –{" "}
-                <ShinyWord>Koszalin i okolice</ShinyWord>
-              </h2>
+              <Title id="lokalizacja-heading">
+                Twój partner w druku UV – Koszalin i okolice
+              </Title>
               <p className="text-black/70 mt-2  xl:text-xl lg:mt-5 lg:max-w-[80%]">
                 Działamy na terenie Koszalina, Kołobrzegu, Białogardu, Darłowa,
                 Szczecinka i całego województwa zachodniopomorskiego.
@@ -52,7 +50,7 @@ export default function Map() {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
