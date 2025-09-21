@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="mt-20 lg:space-y-24">
+      <main className="mt-20 space-y-12 lg:space-y-24">
         <Hero />
         <BeforeAfter />
         <About />

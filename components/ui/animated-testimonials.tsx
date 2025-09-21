@@ -44,11 +44,11 @@ export const AnimatedTestimonials = ({
     <div className="mx-auto max-w-sm px-4   antialiased md:max-w-4xl md:px-8 ">
       <div className="relative grid items-center gap-5 ">
         <div>
-          <div className="relative h-96 w-full">
+          <div className="relative h-86 w-full">
             <AnimatePresence>
               {testimonials.map((testimonial, index) => (
                 <motion.div
-                  key={testimonial.src}
+                  key={testimonial.name}
                   initial={{
                     opacity: 0,
                     scale: 0.9,
@@ -113,15 +113,15 @@ export const AnimatedTestimonials = ({
           <div className="flex items-center justify-center gap-4  border-2">
             <button
               onClick={handlePrev}
-              className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"
+              className=" flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 hover:cursor-pointer hover:scale-110 transition-transform duration-75"
             >
-              <IconArrowLeft className="h-5 w-5 text-black transition-transform duration-300 group-hover/button:rotate-12 dark:text-neutral-400" />
+              <IconArrowLeft className="h-7 w-7 text-black/50 transition-transform duration-300  " />
             </button>
             <button
               onClick={handleNext}
-              className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"
+              className=" flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 hover:cursor-pointer hover:scale-110 transition-transform duration-75"
             >
-              <IconArrowRight className="h-5 w-5 text-black transition-transform duration-300 group-hover/button:-rotate-12 dark:text-neutral-400" />
+              <IconArrowRight className="h-7 w-7 text-black/50 transition-transform duration-300  " />
             </button>
           </div>
         </div>

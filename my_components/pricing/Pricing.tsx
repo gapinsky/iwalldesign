@@ -43,23 +43,29 @@ const PricingCardsInfo = [
   },
 ];
 
+const content = {
+  titleId: "cennik",
+  leadId: "lead-cennik",
+  description:
+    "Znudziły Cię puste ściany? Zmieńmy to! Druk UV pozwala Ci stworzyć przestrzeń, która inspiruje, zachwyca i zostaje w głowie na długo. To inwestycja w design, który naprawdę robi różnicę.",
+};
+
 function Pricing() {
   return (
-    <section className="bg-white " aria-labelledby="pricing">
+    <section
+      className="bg-white "
+      aria-labelledby="cennik"
+      aria-describedby="lead-cennik"
+    >
       <Container>
-        <div className="border-2">
-          <Title id="cennik-tytuł">
-            Inwestycja w design która się opłaca! Sprawdź{" "}
-            <ShinyWord>ile kosztuje druk UV.</ShinyWord>
-          </Title>
-          <p className="  text-black/70 mt-5 xl:text-xl">
-            Ceny druku UV różnią się w zależności od rodzaju powierzchni,
-            wielkości nadruku i skomplikowania projektu. Koszty każdej
-            realizacji ustalamy przed rozpoczęciem pracy. Dbamy o to, by nasze
-            ceny były nie tylko uczciwe i przejrzyste, ale też realnie
-            dopasowane do Twoich potrzeb.
-          </p>
-        </div>
+        <Title
+          titleId={content.titleId}
+          lead={content.leadId}
+          description={content.description}
+        >
+          Inwestycja w design która się opłaca! Sprawdź{" "}
+          <ShinyWord>ile kosztuje druk UV.</ShinyWord>
+        </Title>
         <div className="mt-10 grid grid-cols-1 gap-12 xl:gap-36 lg:grid-cols-3  border-2">
           {PricingCardsInfo.map((card) => (
             <PriceCard
