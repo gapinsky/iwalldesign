@@ -1,13 +1,24 @@
 import React from "react";
+import Title from "../assets/Title";
+import { ShinyWord } from "../navbar/ShinyWord";
+import { AlarmClockCheck, Mail, MapPinned, Phone } from "lucide-react";
+
+const content = {
+  titleId: "kontakt-tytuł",
+  leadId: "kontakt-lead",
+  description:
+    "Niezależnie, czy chcesz odmienić wnętrze, nadać charakter przestrzeni biurowej czy stworzyć unikalne nadruki na tekstyliach – przygotujemy dla Ciebie indywidualną ofertę.",
+};
 
 export default function Contact() {
   return (
     <section
       id="kontakt"
-      aria-labelledby="contact-title"
+      aria-labelledby="kontakt-tytuł"
+      aria-describedby="kontakt-lead"
       className="mx-auto max-w-7xl px-4 py-12"
     >
-      <header className="mb-8">
+      {/* <header className="mb-8">
         <h2 id="contact-title" className="text-2xl font-semibold leading-tight">
           Wypełnij formularz, aby otrzymać spersonalizowaną wycenę druku UV
         </h2>
@@ -15,72 +26,111 @@ export default function Contact() {
           Przygotujemy dla Ciebie indywidualną ofertę – szybko, rzetelnie i bez
           ukrytych kosztów.
         </p>
-      </header>
+      </header> */}
+      <Title
+        titleId={content.titleId}
+        description={content.description}
+        lead={content.description}
+      >
+        Wypełnij formularz, aby otrzymać spersonalizowaną wycenę druku UV –
+        <ShinyWord>
+          szybko, rzetelnie <span className="text-black">i</span> bez ukrytych
+          kosztów.
+        </ShinyWord>
+      </Title>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="mt-10 grid gap-8 md:grid-cols-2">
         {/* LEWA KOLUMNA */}
         <aside className="space-y-6">
           <section
-            aria-labelledby="reach-us"
-            className="rounded-lg border bg-white p-6 shadow-sm"
+            aria-labelledby="skontaktuj-się"
+            className="rounded-lg  bg-white p-6 "
           >
-            <h3 id="reach-us" className="mb-4 text-lg font-medium">
+            <h3
+              id="skontaktuj-się"
+              className="mb-12 text-xl font-medium lg:text-2xl"
+            >
               Bądźmy w kontakcie!
             </h3>
 
             <address className="not-italic">
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start gap-3">
-                  <span aria-hidden className="mt-0.5">
-                    ✉️
-                  </span>
-                  <a
-                    href="mailto:example@mail.com"
-                    className="underline-offset-2 hover:underline"
+              <ul className="space-y-12 text-lg">
+                <li className="flex items-center gap-3 ">
+                  <span
+                    aria-hidden
+                    className="mt-0.5  p-3 rounded-md bg-gray-200 text-gray-500"
                   >
-                    example@mail.com
-                  </a>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span aria-hidden className="mt-0.5">
-                    📞
+                    <Mail className=" aspect-square" />
                   </span>
-                  <a
-                    href="tel:+48123456789"
-                    className="underline-offset-2 hover:underline"
+                  <div className=" h-full flex flex-col items-start ">
+                    <span className="text-sm text-black/40">
+                      Napisz do nas!
+                    </span>
+                    <a
+                      href="mailto:example@mail.com"
+                      className="underline-offset-2 hover:underline font-semibold"
+                    >
+                      example@mail.com
+                    </a>
+                  </div>
+                </li>
+                <li className="flex items-center gap-3 ">
+                  <span
+                    aria-hidden
+                    className="mt-0.5  p-3 rounded-md bg-gray-200 text-gray-500"
                   >
-                    +48 123 456 789
-                  </a>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span aria-hidden className="mt-0.5">
-                    📍
+                    <Phone className=" aspect-square" />
                   </span>
-                  <span>Ul. Drukarek 5, 75-344 Koszalin</span>
+                  <div className=" h-full flex flex-col items-start ">
+                    <span className="text-sm text-black/40">
+                      Zadzwoń do nas
+                    </span>
+                    <a
+                      href="tel:+48123456789"
+                      className="underline-offset-2 hover:underline font-semibold"
+                    >
+                      +48 123 456 789
+                    </a>
+                  </div>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span aria-hidden className="mt-0.5">
-                    ⏱️
+                <li className="flex items-center gap-3 ">
+                  <span
+                    aria-hidden
+                    className="mt-0.5  p-3 rounded-md bg-gray-200 text-gray-500"
+                  >
+                    <MapPinned className=" aspect-square" />
                   </span>
-                  <span>Odpowiadamy tego samego dnia</span>
+                  <div className=" h-full flex flex-col items-start ">
+                    <span className="text-sm text-black/40">Odwiedź nas</span>
+                    <span className="font-semibold">
+                      Ul. Drukarek 5, 75-344 Koszalin
+                    </span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3 ">
+                  <span
+                    aria-hidden
+                    className="mt-0.5  p-3 rounded-md bg-gray-200 text-gray-500"
+                  >
+                    <AlarmClockCheck className=" aspect-square" />
+                  </span>
+                  <div className=" h-full flex flex-col items-start ">
+                    <span className="text-sm text-black/40">
+                      Szybka odpowiedź
+                    </span>
+                    <span className="font-semibold">
+                      Odpowiadamy tego samego dnia
+                    </span>
+                    <span className="text-xs text-black/40">
+                      Dokładamy wszelkich starań aby dostarczyć Wam
+                      natychmiastowych odpowiedzi, jednak w wyjątkowych
+                      sytuacjach czas odpowiedzi może wydłużyć się do 24h.
+                      Dziękujemy za cierpliwość!
+                    </span>
+                  </div>
                 </li>
               </ul>
             </address>
-          </section>
-
-          <section
-            aria-labelledby="why-us"
-            className="rounded-lg border bg-white p-6 shadow-sm"
-          >
-            <h3 id="why-us" className="mb-3 text-lg font-medium">
-              Dlaczego warto nas wybrać?
-            </h3>
-            <ul className="list-disc pl-5 text-sm leading-6 text-neutral-700">
-              <li>Doświadczenie w druku UV i na tekstyliach</li>
-              <li>Wycena bez ukrytych kosztów</li>
-              <li>Indywidualne podejście do projektu</li>
-              <li>Szybka realizacja i wsparcie posprzedażowe</li>
-            </ul>
           </section>
         </aside>
 
