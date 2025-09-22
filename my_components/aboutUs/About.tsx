@@ -1,17 +1,9 @@
-import Image from "next/image";
+
 import { ShinyWord } from "../navbar/ShinyWord";
 import StatCard from "./StatCard";
 import Title from "../assets/Title";
 import Container from "../assets/Container";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
-import {
-  AlarmClockCheck,
-  Award,
-  BadgeCheck,
-  BriefcaseBusiness,
-  ThumbsUp,
-  UserCheck,
-} from "lucide-react";
 import List from "./List";
 
 const images = [
@@ -73,7 +65,7 @@ export default function AboutSection() {
 
           {/* PRAWA KOLUMNA – obraz + statystyki */}
           <div className="space-y-6 border-2">
-            <div className="mx-auto w-[90%] md:w-full">
+            <div className="mx-auto w-full">
               <AnimatedTestimonials testimonials={images} />
             </div>
 

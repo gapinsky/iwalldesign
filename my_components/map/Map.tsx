@@ -1,36 +1,43 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import { ShinyWord } from "../navbar/ShinyWord";
 import Title from "../assets/Title";
 import Container from "../assets/Container";
 
+const content = {
+  titleId: "lokalizacja",
+  leadId: "lead-lokalizacja",
+  description:
+    "Działamy na terenie Koszalina, Kołobrzegu, Białogardu, Darłowa, Szczecinka i całego województwa zachodniopomorskiego. Niezależnie, czy potrzebujesz nadruku w domu, biurze czy przestrzeni publicznej – jesteśmy blisko Ciebie.",
+};
+
 export default function Map() {
   return (
-    <section className="" aria-labelledby="lokalizacja-heading">
+    <section
+      className=""
+      id="lokalizacja"
+      aria-labelledby="lokalizacja"
+      aria-describedby="lead-lokalizacja"
+    >
       <Container>
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:items-start">
-          <div className="flex flex-col items-start justify-between md:h-full ">
-            <div>
-              <Title id="lokalizacja-heading">
-                Twój partner w druku UV – Koszalin i okolice
-              </Title>
-              <p className="text-black/70 mt-2  xl:text-xl lg:mt-5 lg:max-w-[80%]">
-                Działamy na terenie Koszalina, Kołobrzegu, Białogardu, Darłowa,
-                Szczecinka i całego województwa zachodniopomorskiego.
-                Niezależnie, czy potrzebujesz nadruku w domu, biurze czy
-                przestrzeni publicznej – jesteśmy blisko Ciebie.
-              </p>
-            </div>
+          <div className="flex flex-col  items-start gap-8 md:gap-4 justify-evenly md:h-full ">
+            <Title
+              titleId={content.titleId}
+              description={content.description}
+              lead={content.leadId}
+            >
+              Twój partner w druku UV – Koszalin i okolice
+            </Title>
 
-            <address className=" text-black/80 leading-relaxed space-y-2 text-sm lg:text-xl">
-              <div className="font-semibold flex gap-2 items-center ">
+            <address className=" text-black/70 leading-relaxed font-medium space-y-2 text-sm lg:text-xl">
+              <div className=" flex gap-2 items-center ">
                 <MapPin className="text-emerald-500" />
                 ul. Drukarek 5 Koszalin 75-000
               </div>
-              <div className="font-semibold flex gap-2 items-center ">
+              <div className=" flex gap-2 items-center ">
                 <Phone className="text-emerald-500" />
                 123 456 789
               </div>
-              <div className="font-semibold flex gap-2 items-center ">
+              <div className=" flex gap-2 items-center ">
                 <Mail className="text-emerald-500" />
                 iwalldesign@mail.com
               </div>

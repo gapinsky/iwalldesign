@@ -62,23 +62,31 @@ const cards = [
   },
 ];
 
+const content = {
+  titleId: "realizacje-druku-uv",
+  leadId: "lead-realizacje-druku-uv",
+  description:
+    "Każdy projekt to nowa historia – od odważnych nadruków na ścianach, przez designerskie podłogi, aż po indywidualne nadruki na odzieży. Nasze realizacje pokazują, jak druk UV potrafi zmienić zwykłą przestrzeń w coś, co budzi emocje i zostaje w pamięci.",
+};
+
 function Gallery() {
   return (
-    <section className="bg-white " aria-labelledby="hero-heading">
+    <section
+      className="bg-white "
+      aria-labelledby="realizacje-druku-uv"
+      aria-describedby="lead-realizacje-druku-uv"
+      id="realizacje"
+    >
       <Container>
-        <header className="  w-full border-2 mb-10">
-          <Title id="galeria-tytuł">
-            Nasze <ShinyWord>realizacje.</ShinyWord> Zobacz jak Druk UV zmienia
-            przestrzeń
-          </Title>
-          <p className="text-black/70 mt-5 text-start xl:text-xl mb-10">
-            Każdy projekt to nowa historia – od odważnych nadruków na ścianach,
-            przez designerskie podłogi, aż po indywidualne nadruki na odzieży.
-            Nasze realizacje pokazują, jak druk UV potrafi zmienić zwykłą
-            przestrzeń w coś, co budzi emocje i zostaje w pamięci.
-          </p>
-        </header>
-        <div className="">
+        <Title
+          titleId={content.titleId}
+          lead={content.leadId}
+          description={content.description}
+        >
+          Nasze <ShinyWord>realizacje.</ShinyWord> Zobacz jak Druk UV zmienia
+          przestrzeń
+        </Title>
+        <div className="mt-10">
           <GalleryGrid cards={cards} />
         </div>
       </Container>

@@ -2,6 +2,7 @@ import About from "@/my_components/aboutUs/About";
 import BeforeAfter from "@/my_components/beforeAfter/BeforeAfter";
 import Contact from "@/my_components/contact/ContactForm";
 import Faq from "@/my_components/faq/Faq";
+import Footer from "@/my_components/footer/Footer";
 import Hero from "@/my_components/hero/Hero";
 import Map from "@/my_components/map/Map";
 import Navbar from "@/my_components/navbar/Navbar";
@@ -24,6 +25,7 @@ export default function Home() {
         <Pricing />
         <Faq />
         <Contact />
+        <Footer />
       </main>
     </>
   );

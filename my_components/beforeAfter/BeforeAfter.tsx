@@ -24,14 +24,7 @@ function BeforeAfter() {
         <div className="  flex flex-col-reverse items-center justify-center gap-10 md:gap-5  lg:flex-row lg:items-start lg:gap-10 xl:justify-evenly xl:gap-50">
           <CompareBlock />
           <div className="w-full ">
-            {/* <Title id="przed-i-po-tytuł">
-              Nowoczesny <ShinyWord>druk UV</ShinyWord> bez ograniczeń
-            </Title>
-            <p className="  text-black/70 mt-5 xl:text-xl">
-              Znudziły Cię puste ściany? Zmieńmy to! Druk UV pozwala Ci stworzyć
-              przestrzeń, która inspiruje, zachwyca i zostaje w głowie na długo.
-              To inwestycja w design, który naprawdę robi różnicę.
-            </p> */}
+          
             <Title
               titleId={content.titleId}
               lead={content.leadId}

@@ -1,9 +1,7 @@
-// my_components/MaterialsSection.tsx
 "use client";
 import Image from "next/image";
 import { ShinyWord } from "../navbar/ShinyWord";
 import { Tabs } from "@/components/ui/tabs";
-import { motion } from "motion/react";
 import Title from "../assets/Title";
 import Container from "../assets/Container";
 
@@ -144,25 +142,30 @@ const surfaces = [
   },
 ];
 
+const content = {
+  titleId: "powierzchnie",
+  leadId: "lead-powierzchnie",
+  description:
+    "Poznaj szeroką gamę materiałów do druku UV – od ścian i podłóg po tekstylia. Oferujemy nadruki na betonie, cegle, parkiecie, panelach winylowych, bawełnie, poliestrze i wielu innych powierzchniach.",
+};
+
 export default function Surfaces() {
   return (
-    <section aria-labelledby="materials-heading">
+    <section
+      aria-labelledby="powierzchnie"
+      aria-describedby="lead-powierzchnie"
+    >
       <Container>
-        <header className=" mx-auto  border-2">
-          <Title id="powierzchnie-tytuł">
-            Drukujemy na każdej <ShinyWord>powierzchni</ShinyWord>
-          </Title>
-          <p className="text-black/70 mt-5 text-start xl:text-xl mb-20">
-            Poznaj szeroką gamę materiałów do druku UV – od ścian i podłóg po
-            tekstylia. Oferujemy nadruki na betonie, cegle, parkiecie, panelach
-            winylowych, bawełnie, poliestrze i wielu innych powierzchniach.
-          </p>
-        </header>
+        <Title
+          titleId={content.titleId}
+          description={content.description}
+          lead={content.leadId}
+        >
+          Drukujemy na każdej <ShinyWord>powierzchni</ShinyWord>
+        </Title>
 
-        <div className="space-y-12   ">
-          <div className="h-[40rem] md:h-[20rem] [perspective:10000px]   relative  flex flex-col  mx-auto w-full  items-start justify-start mb-40">
-            <Tabs tabs={surfaces} />
-          </div>
+        <div className="mt-12 h-[40rem] md:h-[20rem] [perspective:10000px]   relative  flex flex-col  mx-auto w-full  items-start justify-start mb-20">
+          <Tabs tabs={surfaces} />
         </div>
       </Container>
     </section>
