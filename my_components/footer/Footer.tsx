@@ -18,7 +18,7 @@ export default function Footer() {
               />
             </div>
 
-            <p className="mt-4 max-w-prose text-sm text-neutral-600">
+            <p className="mt-4 max-w-prose text-sm text-black/60">
               Specjalizujemy się w druku UV w Koszalinie i na terenie całego
               województwa zachodniopomorskiego. Oferujemy nadruki na ścianach,
               podłogach i tekstyliach, które zachwycają trwałością, estetyką i
@@ -31,7 +31,7 @@ export default function Footer() {
                 <a
                   href="https://instagram.com/"
                   aria-label="Instagram"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-md border text-neutral-600 hover:bg-neutral-50"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-md border text-black/60 hover:bg-neutral-50"
                 >
                   {/* Instagram icon */}
                   <svg
