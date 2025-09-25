@@ -1,4 +1,3 @@
-
 import { ShinyWord } from "../navbar/ShinyWord";
 import StatCard from "./StatCard";
 import Title from "../assets/Title";

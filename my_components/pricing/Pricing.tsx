@@ -47,7 +47,7 @@ const content = {
   titleId: "cennik",
   leadId: "lead-cennik",
   description:
-    "Znudziły Cię puste ściany? Zmieńmy to! Druk UV pozwala Ci stworzyć przestrzeń, która inspiruje, zachwyca i zostaje w głowie na długo. To inwestycja w design, który naprawdę robi różnicę.",
+    "Zapomnij o rozwiązaniach, które szybko tracą kolor i wymagają częstej wymiany. Druk UV to technologia, która daje intensywne barwy, perfekcyjne detale i trwałość na lata – bez blaknięcia i ścierania. Efekt wygląda lepiej niż w przypadku tradycyjnych metod i zostaje z Tobą na długo.",
 };
 
 function Pricing() {

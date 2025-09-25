@@ -9,18 +9,18 @@ export function CompareCards() {
 }
 export const projects = [
   {
-    title: "Druk na każdej powierzchni",
+    title: "Bez ograniczeń materiałowych",
     description:
       "Ściany, podłogi, ubrania – zamień wszystko w swoje płótno. Twój pomysł, nasza technologia.",
     image: "Layers",
   },
   {
-    title: "Najwyższa jakość",
+    title: "Perfekcyjna jakość",
     description:
-      "Perfekcyjne detale, głębia barw i profesjonalne wykończenie – design, który wygląda lepiej niż w wyobraźni.",
+      "Fotograficzne detale, głębia barw i profesjonalne wykończenie – design, który wygląda lepiej niż w wyobraźni.",
   },
   {
-    title: "Profesjonalne wykończenie",
+    title: "Niezrównana trwałość",
     description:
       "Kolory, które nie blakną i nadruki, które się nie ścierają – efekt, który zostaje z Tobą na długo.",
   },

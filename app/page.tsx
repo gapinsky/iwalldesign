@@ -9,6 +9,7 @@ import Navbar from "@/my_components/navbar/Navbar";
 import Gallery from "@/my_components/portfolio/Gallery";
 import Pricing from "@/my_components/pricing/Pricing";
 import Surfaces from "@/my_components/surfaces/Surfaces";
+import { VisualizerSection } from "@/my_components/vizualizationSection/VizualizationSection";
 import WhereUV from "@/my_components/whereUv/WhereUV";
 export default function Home() {
   return (
@@ -17,12 +18,13 @@ export default function Home() {
       <main className="mt-20 space-y-12 lg:space-y-24">
         <Hero />
         <BeforeAfter />
-        <About />
-        <Surfaces />
         <WhereUV />
+        <Surfaces />
+        <VisualizerSection />
         <Gallery />
-        <Map />
+        <About />
         <Pricing />
+        <Map />
         <Faq />
         <Contact />
         <Footer />
