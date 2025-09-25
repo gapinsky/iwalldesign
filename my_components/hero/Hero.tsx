@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import { ShinyWord } from "../navbar/ShinyWord";
 export default function Hero() {
   return (
-    <section className="bg-white " aria-labelledby="hero-heading">
+    <section className="bg-white " aria-labelledby="hero-heading" id="/">
       <div className="p-5  container mx-auto  flex flex-col items-center justify-center  gap-10 md:flex-row md:justify-evenly md:gap-20 md:px-10  xl:justify-between ">
         {/* Text */}
         <div className="w-[95%] space-y-2 lg:max-w-[600px] xl:space-y-4 ">

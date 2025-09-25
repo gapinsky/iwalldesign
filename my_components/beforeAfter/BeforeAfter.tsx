@@ -15,8 +15,8 @@ const content = {
 function BeforeAfter() {
   return (
     <section
-      className="bg-white "
-      id="dlaczego-uv"
+      className="scroll-mt-14 lg:scroll-mt-16"
+      id="oferta"
       aria-labelledby="dlaczego-druk-uv"
       aria-describedby="lead-dlaczego"
     >

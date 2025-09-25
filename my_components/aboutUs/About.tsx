@@ -41,6 +41,7 @@ export default function AboutSection() {
       id="o-nas"
       aria-labelledby={content.titleId}
       aria-describedby={content.leadId}
+      className="scroll-mt-14 lg:scroll-mt-16"
     >
       <Container>
         <div className="grid items-start gap-10 lg:grid-cols-2">

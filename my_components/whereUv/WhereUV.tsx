@@ -58,8 +58,8 @@ const CardsInfo = [
 ];
 
 const content = {
-  titleId: "o-nas",
-  leadId: "lead-o-nas",
+  titleId: "gdzie-zastosować-druk-uv",
+  leadId: "lead-gdzie-druk-uv",
   description:
     "Od domowych wnętrz po przestrzenie publiczne – druk UV nadaje wyjątkowy charakter każdemu miejscu. Niezależnie, czy chodzi o biuro, restaurację, czy projekt architektoniczny, nasze realizacje podkreślają design i budują niezapomniane wrażenia.",
 };
@@ -67,8 +67,8 @@ const content = {
 function WhereUV() {
   return (
     <section
-      aria-labelledby="o-nas"
-      aria-describedby="lead-o-nas"
+      aria-labelledby="gdzie-zastosować-druk-uv"
+      aria-describedby="lead-gdzie-druk-uv"
       className="bg-white "
     >
       <Container>

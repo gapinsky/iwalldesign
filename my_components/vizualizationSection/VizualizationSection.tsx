@@ -50,6 +50,7 @@ export function VisualizerSection() {
       id="wizualizator"
       aria-labelledby="wiz-title"
       aria-describedby="wiz-lead"
+      className="scroll-mt-14 lg:scroll-mt-16"
     >
       <Container>
         <div className="flex flex-col gap-12">

@@ -53,9 +53,10 @@ const content = {
 function Pricing() {
   return (
     <section
-      className="bg-white "
+      className="scroll-mt-14 lg:scroll-mt-16 "
       aria-labelledby="cennik"
       aria-describedby="lead-cennik"
+      id="cennik"
     >
       <Container>
         <Title
