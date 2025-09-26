@@ -1,292 +1,263 @@
-import React from "react";
-import Title from "../assets/Title";
-import { ShinyWord } from "../navbar/ShinyWord";
-import { AlarmClockCheck, Mail, MapPinned, Phone } from "lucide-react";
+"use client";
 
-const content = {
-  titleId: "kontakt-tytuł",
-  leadId: "kontakt-lead",
-  description:
-    "Niezależnie, czy chcesz odmienić wnętrze, nadać charakter przestrzeni biurowej czy stworzyć unikalne nadruki na tekstyliach – przygotujemy dla Ciebie indywidualną ofertę.",
-};
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Send } from "lucide-react";
 
-export default function Contact() {
+/* ------------------------- Walidacja (Zod) ------------------------- */
+
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB na plik
+// używamy Set<string> żeby uniknąć konfliktu typów z f.type: string
+const ALLOWED_TYPES = new Set<string>([
+  "image/jpeg",
+  "image/png",
+  "application/pdf",
+]);
+
+const schema = z.object({
+  name: z.string().trim().min(2, "Podaj imię i nazwisko"),
+  email: z.string().trim().email({ message: "Podaj poprawny adres e-mail" }),
+  // telefon PL: dokładnie 9 cyfr (po wyczyszczeniu spacji/kresek)
+  phone: z
+    .string()
+    .transform((v) => v.replace(/[^\d]/g, ""))
+    .refine((v) => /^\d{9}$/.test(v), {
+      message: "Podaj 9-cyfrowy numer telefonu",
+    }),
+  city: z.string().trim().min(2, "Podaj miasto"),
+
+  files: z
+    .custom<FileList>((val) => val instanceof FileList, {
+      message: "Dodaj od 1 do 3 plików",
+    })
+    .refine((files) => files && files.length > 0 && files.length <= 3, {
+      message: "Dodaj od 1 do 3 plików",
+    })
+    .refine(
+      (files) =>
+        files && Array.from(files).every((f) => ALLOWED_TYPES.has(f.type)),
+      { message: "Dozwolone formaty: JPG, PNG, PDF" }
+    )
+    .refine(
+      (files) =>
+        files && Array.from(files).every((f) => f.size <= MAX_FILE_SIZE),
+      { message: "Każdy plik max 2 MB" }
+    ),
+
+  message: z.string().trim().optional(),
+  privacy: z.boolean().refine((v) => v === true, {
+    message: "Musisz zaakceptować politykę prywatności",
+  }),
+});
+
+type FormData = z.infer<typeof schema>;
+
+/* ----------------------------- Komponent ----------------------------- */
+
+export default function ContactForm() {
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      const fd = new FormData();
+      fd.append("name", data.name);
+      fd.append("email", data.email);
+      fd.append("phone", data.phone); // już 9 cyfr po transform
+      fd.append("city", data.city);
+      fd.append("message", data.message || "");
+
+      Array.from(data.files || []).forEach((file) => {
+        fd.append("files", file);
+      });
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body: fd,
+      });
+
+      if (!res.ok) throw new Error("Błąd serwera");
+      setStatus("success");
+      reset();
+    } catch (e) {
+      console.error(e);
+      setStatus("error");
+    }
+  };
+
   return (
-    <section
-      id="kontakt"
-      aria-labelledby="kontakt-tytuł"
-      aria-describedby="kontakt-lead"
-      className="mx-auto max-w-7xl px-4 py-12 scroll-mt-14 lg:scroll-mt-16"
-    >
-      {/* <header className="mb-8">
-        <h2 id="contact-title" className="text-2xl font-semibold leading-tight">
-          Wypełnij formularz, aby otrzymać spersonalizowaną wycenę druku UV
-        </h2>
-        <p className="mt-2 text-sm text-neutral-600">
-          Przygotujemy dla Ciebie indywidualną ofertę – szybko, rzetelnie i bez
-          ukrytych kosztów.
-        </p>
-      </header> */}
-      <Title
-        titleId={content.titleId}
-        description={content.description}
-        lead={content.description}
-      >
-        Wypełnij formularz, aby otrzymać spersonalizowaną wycenę druku UV –
-        <ShinyWord>
-          szybko, rzetelnie <span className="text-black">i</span> bez ukrytych
-          kosztów.
-        </ShinyWord>
-      </Title>
+    <div className="max-w-2xl mx-auto">
+      {status === "success" && (
+        <Alert className="mb-4 border-green-600 text-green-700">
+          <AlertTitle>Sukces 🎉</AlertTitle>
+          <AlertDescription>
+            Wiadomość została wysłana poprawnie.
+          </AlertDescription>
+        </Alert>
+      )}
+      {status === "error" && (
+        <Alert className="mb-4 border-red-600 text-red-700">
+          <AlertTitle>Błąd ❌</AlertTitle>
+          <AlertDescription>
+            Coś poszło nie tak. Spróbuj ponownie później.
+          </AlertDescription>
+        </Alert>
+      )}
 
-      <div className="mt-10 grid gap-8 md:grid-cols-2">
-        {/* LEWA KOLUMNA */}
-        <aside className="space-y-6">
-          <section
-            aria-labelledby="skontaktuj-się"
-            className="rounded-lg  bg-white p-6 "
-          >
-            <h3
-              id="skontaktuj-się"
-              className="mb-12 text-xl font-medium lg:text-2xl"
-            >
-              Bądźmy w kontakcie!
-            </h3>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+        {/* Imię + Email */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium">
+              Imię i nazwisko*
+            </label>
+            <input
+              id="name"
+              {...register("name")}
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "err-name" : undefined}
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Jan Kowalski"
+            />
+            {errors.name && (
+              <p id="err-name" className="text-sm text-red-600 mt-1">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
 
-            <address className="not-italic">
-              <ul className="space-y-12 text-lg">
-                <li className="flex items-center gap-3 ">
-                  <span
-                    aria-hidden
-                    className="mt-0.5  p-3 rounded-md bg-gray-200 text-gray-500"
-                  >
-                    <Mail className=" aspect-square" />
-                  </span>
-                  <div className=" h-full flex flex-col items-start ">
-                    <span className="text-sm text-black/40">
-                      Napisz do nas!
-                    </span>
-                    <a
-                      href="mailto:example@mail.com"
-                      className="underline-offset-2 hover:underline font-semibold"
-                    >
-                      example@mail.com
-                    </a>
-                  </div>
-                </li>
-                <li className="flex items-center gap-3 ">
-                  <span
-                    aria-hidden
-                    className="mt-0.5  p-3 rounded-md bg-gray-200 text-gray-500"
-                  >
-                    <Phone className=" aspect-square" />
-                  </span>
-                  <div className=" h-full flex flex-col items-start ">
-                    <span className="text-sm text-black/40">
-                      Zadzwoń do nas
-                    </span>
-                    <a
-                      href="tel:+48123456789"
-                      className="underline-offset-2 hover:underline font-semibold"
-                    >
-                      +48 123 456 789
-                    </a>
-                  </div>
-                </li>
-                <li className="flex items-center gap-3 ">
-                  <span
-                    aria-hidden
-                    className="mt-0.5  p-3 rounded-md bg-gray-200 text-gray-500"
-                  >
-                    <MapPinned className=" aspect-square" />
-                  </span>
-                  <div className=" h-full flex flex-col items-start ">
-                    <span className="text-sm text-black/40">Odwiedź nas</span>
-                    <span className="font-semibold">
-                      Ul. Drukarek 5, 75-344 Koszalin
-                    </span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3 ">
-                  <span
-                    aria-hidden
-                    className="mt-0.5  p-3 rounded-md bg-gray-200 text-gray-500"
-                  >
-                    <AlarmClockCheck className=" aspect-square" />
-                  </span>
-                  <div className=" h-full flex flex-col items-start ">
-                    <span className="text-sm text-black/40">
-                      Szybka odpowiedź
-                    </span>
-                    <span className="font-semibold">
-                      Odpowiadamy tego samego dnia
-                    </span>
-                    <span className="text-xs text-black/40">
-                      Dokładamy wszelkich starań aby dostarczyć Wam
-                      natychmiastowych odpowiedzi, jednak w wyjątkowych
-                      sytuacjach czas odpowiedzi może wydłużyć się do 24h.
-                      Dziękujemy za cierpliwość!
-                    </span>
-                  </div>
-                </li>
-              </ul>
-            </address>
-          </section>
-        </aside>
-
-        {/* PRAWA KOLUMNA (FORMULARZ) */}
-        <div>
-          <form className="rounded-lg border bg-white p-6 shadow-sm" noValidate>
-            <fieldset className="grid gap-4 md:grid-cols-2">
-              <legend className="sr-only">Dane kontaktowe</legend>
-
-              <div className="flex flex-col">
-                <label htmlFor="name" className="mb-1 text-sm font-medium">
-                  Imię i nazwisko{" "}
-                  <span aria-hidden className="text-emerald-600">
-                    *
-                  </span>
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  className="rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label htmlFor="email" className="mb-1 text-sm font-medium">
-                  E-mail{" "}
-                  <span aria-hidden className="text-emerald-600">
-                    *
-                  </span>
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  className="rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label htmlFor="phone" className="mb-1 text-sm font-medium">
-                  Numer telefonu
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  className="rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label htmlFor="city" className="mb-1 text-sm font-medium">
-                  Miasto
-                </label>
-                <input
-                  id="city"
-                  name="city"
-                  type="text"
-                  className="rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
-                />
-              </div>
-            </fieldset>
-
-            <fieldset className="mt-5">
-              <legend className="mb-2 text-sm font-medium">
-                Dodaj zdjęcia powierzchni lub projektu (max 3)
-              </legend>
-
-              {/* UI strefy wgrywania – bez logiki */}
-              <div className="flex flex-col items-center justify-center rounded-md border border-dashed bg-neutral-50 px-4 py-8 text-center">
-                <p className="text-sm text-neutral-600">
-                  Przeciągnij i upuść pliki tutaj lub
-                </p>
-                <label
-                  htmlFor="files"
-                  className="mt-2 inline-block cursor-pointer rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white"
-                >
-                  Przeglądaj
-                </label>
-                <input
-                  id="files"
-                  name="files"
-                  type="file"
-                  multiple
-                  className="sr-only"
-                />
-                <p className="mt-2 text-xs text-neutral-500">
-                  Obsługiwane: JPG, PNG, PDF (do 10 MB każdy)
-                </p>
-              </div>
-
-              {/* Placeholder listy plików (UI) */}
-              <ul className="mt-3 space-y-2 text-sm">
-                <li className="flex items-center justify-between rounded-md border px-3 py-2 text-neutral-600">
-                  <span className="truncate">plik-przykladowy-1.jpg</span>
-                  <button
-                    type="button"
-                    className="text-red-600 hover:underline"
-                  >
-                    Usuń
-                  </button>
-                </li>
-              </ul>
-            </fieldset>
-
-            <div className="mt-5">
-              <label
-                htmlFor="message"
-                className="mb-1 block text-sm font-medium"
-              >
-                Dodatkowe informacje (opcjonalnie)
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={4}
-                className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
-              />
-            </div>
-
-            <fieldset className="mt-5">
-              <legend className="sr-only">Zgody</legend>
-              <label className="inline-flex items-start gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  name="consent"
-                  className="mt-1"
-                  required
-                />
-                <span>
-                  Zapoznałem(am) się i akceptuję{" "}
-                  <a
-                    href="/polityka-prywatnosci"
-                    className="text-emerald-700 underline-offset-2 hover:underline"
-                  >
-                    Politykę Prywatności
-                  </a>
-                  .
-                </span>
-              </label>
-            </fieldset>
-
-            <div className="mt-6">
-              <button
-                type="submit"
-                className="inline-flex w-full items-center justify-center rounded-md bg-gradient-to-r from-emerald-600 to-cyan-600 px-4 py-2.5 text-white transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              >
-                Wyślij zapytanie
-              </button>
-            </div>
-          </form>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium">
+              E-mail*
+            </label>
+            <input
+              id="email"
+              type="email"
+              inputMode="email"
+              {...register("email")}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "err-email" : undefined}
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="jan@przyklad.pl"
+            />
+            {errors.email && (
+              <p id="err-email" className="text-sm text-red-600 mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+
+        {/* Telefon + Miasto */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium">
+              Numer telefonu*
+            </label>
+            <input
+              id="phone"
+              inputMode="tel"
+              {...register("phone")}
+              aria-invalid={!!errors.phone}
+              aria-describedby={errors.phone ? "err-phone" : undefined}
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="+48 500 600 700"
+            />
+            {errors.phone && (
+              <p id="err-phone" className="text-sm text-red-600 mt-1">
+                {errors.phone.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="city" className="block text-sm font-medium">
+              Miasto*
+            </label>
+            <input
+              id="city"
+              {...register("city")}
+              aria-invalid={!!errors.city}
+              aria-describedby={errors.city ? "err-city" : undefined}
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Koszalin"
+            />
+            {errors.city && (
+              <p id="err-city" className="text-sm text-red-600 mt-1">
+                {errors.city.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Pliki */}
+        <div>
+          <label htmlFor="files" className="block text-sm font-medium">
+            Dodaj zdjęcia powierzchni lub projektu* (Max. 3)
+          </label>
+          <input
+            id="files"
+            type="file"
+            multiple
+            accept=".jpg,.jpeg,.png,.pdf"
+            {...register("files")}
+            aria-invalid={!!errors.files}
+            aria-describedby={errors.files ? "err-files" : undefined}
+            className="mt-2 block w-full text-sm text-gray-700 file:mr-4 file:rounded-md file:border file:border-gray-300 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium hover:file:bg-gray-100"
+          />
+          {errors.files && (
+            <p id="err-files" className="text-sm text-red-600 mt-1">
+              {errors.files.message}
+            </p>
+          )}
+        </div>
+
+        {/* Wiadomość */}
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium">
+            Dodatkowe informacje (opcjonalnie)
+          </label>
+          <textarea
+            id="message"
+            {...register("message")}
+            rows={5}
+            className="mt-1 w-full resize-none rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            placeholder="Opisz szczegóły projektu…"
+          />
+        </div>
+
+        {/* Checkbox */}
+        <div className="flex items-center gap-2">
+          <input id="privacy" type="checkbox" {...register("privacy")} />
+          <label htmlFor="privacy" className="text-sm text-gray-700">
+            Zapoznałem(am) się i akceptuję Politykę Prywatności
+          </label>
+        </div>
+        {errors.privacy && (
+          <p className="text-sm text-red-600 mt-1">{errors.privacy.message}</p>
+        )}
+
+        {/* Submit */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-teal-500 to-cyan-500 px-5 py-2.5 font-medium text-white hover:opacity-90 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-600"
+        >
+          <Send size={18} />
+          {isSubmitting ? "Wysyłanie..." : "Wyślij zapytanie"}
+        </button>
+      </form>
+    </div>
   );
 }
