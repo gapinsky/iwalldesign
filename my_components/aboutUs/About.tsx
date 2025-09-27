@@ -12,19 +12,19 @@ const images = [
   },
   {
     name: "zdjecie 2",
-    src: "/assets/images/about/about.png",
+    src: "/assets/images/gallery/gallery1.png",
   },
   {
     name: "zdjecie 3",
-    src: "/assets/images/about/about.png",
+    src: "/assets/images/gallery/gallery2.png",
   },
   {
     name: "zdjecie 4",
-    src: "/assets/images/about/about.png",
+    src: "/assets/images/gallery/gallery3.png",
   },
   {
     name: "zdjecie 5",
-    src: "/assets/images/about/about.png",
+    src: "/assets/images/gallery/gallery4.png",
   },
 ];
 

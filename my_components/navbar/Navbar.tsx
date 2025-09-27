@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 
 const SECTIONS = [
@@ -17,7 +17,7 @@ const SECTIONS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // Lock scroll + Esc to close
+  // blokada scrolla + Esc
   useEffect(() => {
     const { documentElement, body } = document;
     if (open) {
@@ -29,17 +29,41 @@ export default function Navbar() {
       body.style.overflow = "";
       body.style.touchAction = "";
     }
-    const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
+    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("keydown", onEsc);
-    return () => {
-      documentElement.style.overflow = "";
-      body.style.overflow = "";
-      body.style.touchAction = "";
-      document.removeEventListener("keydown", onEsc);
-    };
+    return () => document.removeEventListener("keydown", onEsc);
   }, [open]);
+
+  // helper: smooth scroll z offsetem headera
+  const scrollWithOffset = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    const header = document.querySelector<HTMLElement>("[data-sticky-header]");
+    if (!el) return;
+    const headerH = header?.offsetHeight ?? 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerH - 6;
+    window.scrollTo({ top, behavior: "smooth" });
+  }, []);
+
+  // klik w link sekcji
+  const onSectionClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    slug: string
+  ) => {
+    // zawsze zatrzymaj domyślne zachowanie i scrolluj ręcznie
+    e.preventDefault();
+    setOpen(false);
+    // jeśli jesteś na innej stronie, najpierw przejdź na "/" z #, a po nawigacji dociągnie HashScrollFix (poniżej)
+    if (location.pathname !== "/") {
+      history.pushState(null, "", `/#${slug}`);
+      // wymuś przeładowanie SPA do /
+      location.assign(`/#${slug}`);
+      return;
+    }
+    // na landingu — od razu przewiń z offsetem
+    scrollWithOffset(slug);
+    // zaktualizuj hash w pasku adresu (bez reloadu)
+    history.pushState(null, "", `#${slug}`);
+  };
 
   const linkCls =
     "relative px-2 py-3 font-medium text-gray-800 transition-colors duration-200 hover:text-black " +
@@ -48,7 +72,7 @@ export default function Navbar() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-[100] bg-white border-b will-change-transform transform-gpu overscroll-contain"
+      className="fixed top-0 left-0 right-0 z-[100] bg-white border-b will-change-transform transform-gpu pt-1 pb-2"
       data-sticky-header
     >
       {/* DESKTOP */}
@@ -57,6 +81,14 @@ export default function Navbar() {
           href="/"
           aria-label="Strona główna"
           className="flex items-center gap-2"
+          onClick={(e) => {
+            // płynny powrót do góry na landingu
+            if (location.pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              history.pushState(null, "", "/");
+            }
+          }}
         >
           <Image
             src="/assets/images/hero/logo.png"
@@ -70,7 +102,11 @@ export default function Navbar() {
         <ul className="flex items-center gap-8">
           {SECTIONS.map(({ slug, label }) => (
             <li key={slug}>
-              <Link href={`/#${slug}`} className={linkCls}>
+              <Link
+                href={`/#${slug}`}
+                className={linkCls}
+                onClick={(e) => onSectionClick(e, slug)}
+              >
                 {label}
               </Link>
             </li>
@@ -87,7 +123,18 @@ export default function Navbar() {
 
       {/* MOBILE – top bar */}
       <div className="lg:hidden container mx-auto h-14 px-4 flex items-center justify-between">
-        <Link href="/" aria-label="Strona główna" className="flex items-center">
+        <Link
+          href="/"
+          aria-label="Strona główna"
+          className="flex items-center"
+          onClick={(e) => {
+            if (location.pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              history.pushState(null, "", "/");
+            }
+          }}
+        >
           <Image
             src="/assets/images/logo.png"
             alt="iWallDesign logo"
@@ -106,16 +153,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* MOBILE – OVERLAY (klik poza panelem zamyka) */}
-      {open && (
-        <button
-          aria-hidden="true"
-          onClick={() => setOpen(false)}
-          className="lg:hidden fixed top-14 left-0 right-0 bottom-0 z-[80] bg-black/40 backdrop-blur-[1px] transition-opacity"
-        />
-      )}
-
-      {/* MOBILE – PANEL (fixed pod headerem) */}
+      {/* MOBILE – panel (bez overlayu) */}
       <div
         className={[
           "lg:hidden fixed left-0 right-0 z-[90]",
@@ -130,7 +168,7 @@ export default function Navbar() {
             <li key={slug} className="border-b">
               <Link
                 href={`/#${slug}`}
-                onClick={() => setOpen(false)}
+                onClick={(e) => onSectionClick(e, slug)}
                 className={linkCls + " block w-full"}
               >
                 {label}
