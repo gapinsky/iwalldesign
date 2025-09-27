@@ -22,7 +22,6 @@ const escapeHtml = (s: string) =>
 
 export async function POST(req: Request) {
   try {
-    // odbiór multipart/form-data
     const form = await req.formData();
 
     const name = trim(form.get("name") as string);
@@ -49,9 +48,15 @@ export async function POST(req: Request) {
     if (!city) {
       return NextResponse.json({ error: "Podaj miasto." }, { status: 400 });
     }
-    if (files.length === 0 || files.length > 3) {
-      return NextResponse.json({ error: "Dodaj 1–3 pliki." }, { status: 400 });
+
+    // pliki są OPCJONALNE: 0–3
+    if (files.length > 3) {
+      return NextResponse.json(
+        { error: "Dodaj maksymalnie 3 pliki." },
+        { status: 400 }
+      );
     }
+    // jeśli są pliki → sprawdź typ i rozmiar
     for (const f of files) {
       if (!ALLOWED_TYPES.has(f.type)) {
         return NextResponse.json(
@@ -67,13 +72,18 @@ export async function POST(req: Request) {
       }
     }
 
-    // przygotuj załączniki (Uwaga: duże requesty mogą przekroczyć limit Vercela ~4.5MB)
-    const attachments = await Promise.all(
-      files.map(async (file) => ({
-        filename: file.name,
-        content: Buffer.from(await file.arrayBuffer()),
-      }))
-    );
+    // przygotuj załączniki tylko jeśli są pliki
+    let attachments: { filename: string; content: Buffer }[] | undefined =
+      undefined;
+
+    if (files.length > 0) {
+      attachments = await Promise.all(
+        files.map(async (file) => ({
+          filename: file.name,
+          content: Buffer.from(await file.arrayBuffer()),
+        }))
+      );
+    }
 
     const to = process.env.CONTACT_TO_EMAIL;
     const from = process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev";
@@ -84,7 +94,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // HTML + text (fallback)
     const html = `
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#111">
         <h2 style="margin:0 0 6px 0">Nowe zapytanie z formularza</h2>
@@ -113,11 +122,11 @@ ${message || "(brak)"}
     await resend.emails.send({
       from,
       to,
-      replyTo: email, // pozwala kliknąć "Odpowiedz" prosto do klienta
+      replyTo: email,
       subject: `[iWallDesign] Zapytanie od ${name}`,
       html,
       text,
-      attachments,
+      ...(attachments ? { attachments } : {}), // <-- tylko gdy są
     });
 
     return NextResponse.json({ ok: true });

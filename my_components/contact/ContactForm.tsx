@@ -1,16 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useMemo, useState, useEffect } from "react";
+import { useForm, type Resolver } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Send } from "lucide-react";
+import { Send, X } from "lucide-react";
 
 /* ------------------------- Walidacja (Zod) ------------------------- */
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB na plik
-// używamy Set<string> żeby uniknąć konfliktu typów z f.type: string
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
 const ALLOWED_TYPES = new Set<string>([
   "image/jpeg",
   "image/png",
@@ -20,100 +18,217 @@ const ALLOWED_TYPES = new Set<string>([
 const schema = z.object({
   name: z.string().trim().min(2, "Podaj imię i nazwisko"),
   email: z.string().trim().email({ message: "Podaj poprawny adres e-mail" }),
-  // telefon PL: dokładnie 9 cyfr (po wyczyszczeniu spacji/kresek)
   phone: z
     .string()
-    .transform((v) => v.replace(/[^\d]/g, ""))
+    .transform((v) => v.replace(/[^\d]/g, "")) // sanitizacja
     .refine((v) => /^\d{9}$/.test(v), {
-      message: "Podaj 9-cyfrowy numer telefonu",
+      message: "Numer telefonu musi mieć 9 cyfr",
     }),
   city: z.string().trim().min(2, "Podaj miasto"),
-
   files: z
-    .custom<FileList>((val) => val instanceof FileList, {
-      message: "Dodaj od 1 do 3 plików",
+    .array(z.instanceof(File))
+    .max(3, "Dodaj maksymalnie 3 pliki")
+    .refine((arr) => arr.every((f) => ALLOWED_TYPES.has(f.type)), {
+      message: "Dozwolone formaty: JPG, PNG, PDF",
     })
-    .refine((files) => files && files.length > 0 && files.length <= 3, {
-      message: "Dodaj od 1 do 3 plików",
+    .refine((arr) => arr.every((f) => f.size <= MAX_FILE_SIZE), {
+      message: "Każdy plik max 2 MB",
     })
-    .refine(
-      (files) =>
-        files && Array.from(files).every((f) => ALLOWED_TYPES.has(f.type)),
-      { message: "Dozwolone formaty: JPG, PNG, PDF" }
-    )
-    .refine(
-      (files) =>
-        files && Array.from(files).every((f) => f.size <= MAX_FILE_SIZE),
-      { message: "Każdy plik max 2 MB" }
-    ),
-
-  message: z.string().trim().optional(),
+    .default([]),
+  message: z.string().trim().min(5, "Wiadomość jest wymagana (min. 5 znaków)"),
   privacy: z.boolean().refine((v) => v === true, {
     message: "Musisz zaakceptować politykę prywatności",
   }),
+  website: z.string().optional().default(""), // honeypot
 });
 
-type FormData = z.infer<typeof schema>;
+type FormData = z.output<typeof schema>;
+type SubmitResult = "success" | "error";
+type Props = { onSubmitResult?: (r: SubmitResult) => void };
 
 /* ----------------------------- Komponent ----------------------------- */
 
-export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+export default function ContactForm({ onSubmitResult }: Props) {
+  const [isOver, setIsOver] = useState(false);
+  const [liveMsg, setLiveMsg] = useState("");
+
+  const resolver = zodResolver(schema) as unknown as Resolver<FormData>;
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
+    watch,
+    setError,
+    clearErrors,
+    getValues,
+    setFocus,
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver,
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      city: "",
+      message: "",
+      privacy: false,
+      files: [],
+      website: "",
+    },
   });
+
+  const files = watch("files");
+
+  /* ---------- dodawanie/usuwanie plików (input + drag&drop) ---------- */
+
+  const mergeAndSetFiles = (incoming: File[]) => {
+    const current = getValues("files") ?? [];
+    const merged = [...current, ...incoming];
+
+    // unikalność po (name, size, type)
+    const unique = merged.filter(
+      (f, i, arr) =>
+        i ===
+        arr.findIndex(
+          (x) => x.name === f.name && x.size === f.size && x.type === f.type
+        )
+    );
+
+    if (unique.length > 3)
+      setError("files", { message: "Maksymalnie 3 pliki" });
+    else clearErrors("files");
+
+    setValue("files", unique.slice(0, 3), { shouldValidate: true });
+    setLiveMsg(`Dodano ${incoming.length} plik(i).`);
+  };
+
+  const onAddFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files ?? []);
+    if (!selected.length) return;
+    mergeAndSetFiles(selected);
+    e.currentTarget.value = ""; // pozwala dodać ten sam plik ponownie
+  };
+
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsOver(false);
+    const dropped = Array.from(e.dataTransfer.files ?? []);
+    if (dropped.length) mergeAndSetFiles(dropped);
+  };
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsOver(true);
+  };
+  const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+    setIsOver(false);
+  };
+
+  const removeFile = (idx: number) => {
+    const next = files.filter((_, i) => i !== idx);
+    setValue("files", next, { shouldValidate: true });
+    setLiveMsg(`Usunięto plik ${idx + 1}.`);
+  };
+
+  /* ----------------------------- submit ------------------------------ */
+
+  const fullReset = () => {
+    reset();
+    setIsOver(false);
+    setLiveMsg("");
+    setFocus("name");
+  };
 
   const onSubmit = async (data: FormData) => {
     try {
+      // honeypot – jeśli bot wypełni, udajemy sukces
+      if (data.website && data.website.trim() !== "") {
+        onSubmitResult?.("success");
+        fullReset();
+        return;
+      }
+
       const fd = new FormData();
       fd.append("name", data.name);
       fd.append("email", data.email);
-      fd.append("phone", data.phone); // już 9 cyfr po transform
+      fd.append("phone", data.phone);
       fd.append("city", data.city);
-      fd.append("message", data.message || "");
+      fd.append("message", data.message);
+      data.files.forEach((file) => fd.append("files", file));
 
-      Array.from(data.files || []).forEach((file) => {
-        fd.append("files", file);
-      });
-
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        body: fd,
-      });
-
+      const res = await fetch("/api/contact", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Błąd serwera");
-      setStatus("success");
-      reset();
+
+      onSubmitResult?.("success");
+      fullReset();
+      setLiveMsg("Wiadomość wysłana.");
     } catch (e) {
       console.error(e);
-      setStatus("error");
+      onSubmitResult?.("error");
+      setLiveMsg("Błąd wysyłki.");
     }
+  };
+
+  /* ---------------------- Miniatury obrazków ---------------------- */
+  const previews = useMemo(
+    () =>
+      files.map((f) =>
+        f.type.startsWith("image/") ? URL.createObjectURL(f) : null
+      ),
+    [files]
+  );
+
+  useEffect(() => {
+    return () => {
+      previews.forEach((u) => u && URL.revokeObjectURL(u));
+    };
+  }, [previews]);
+
+  const prettySize = (n: number) => {
+    if (n >= 1024 * 1024) return `${(n / (1024 * 1024)).toFixed(1)} MB`;
+    if (n >= 1024) return `${(n / 1024).toFixed(0)} KB`;
+    return `${n} B`;
+  };
+
+  /* ------ Blokada nie-cyfr w telefonie (UX + zgodność ze wszystkimi) ------ */
+  const allowOnlyDigits = (e: React.FormEvent<HTMLInputElement>) => {
+    // @ts-ignore nativeEvent.data dla beforeinput
+    const data: string | null = e.nativeEvent?.data ?? null;
+    if (data && /\D/.test(data)) e.preventDefault();
+  };
+  const onPhonePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const digits = e.clipboardData.getData("text").replace(/[^\d]/g, "");
+    const target = e.currentTarget;
+    const start = target.selectionStart ?? target.value.length;
+    const end = target.selectionEnd ?? start;
+    const next =
+      target.value.slice(0, start) + digits + target.value.slice(end);
+    target.value = next;
+    target.dispatchEvent(new Event("input", { bubbles: true }));
+  };
+  const onPhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const ctrl = [
+      "Backspace",
+      "Delete",
+      "ArrowLeft",
+      "ArrowRight",
+      "Home",
+      "End",
+      "Tab",
+    ];
+    if (ctrl.includes(e.key)) return;
+    if (!/^\d$/.test(e.key)) e.preventDefault();
   };
 
   return (
     <div className="max-w-2xl mx-auto">
-      {status === "success" && (
-        <Alert className="mb-4 border-green-600 text-green-700">
-          <AlertTitle>Sukces 🎉</AlertTitle>
-          <AlertDescription>
-            Wiadomość została wysłana poprawnie.
-          </AlertDescription>
-        </Alert>
-      )}
-      {status === "error" && (
-        <Alert className="mb-4 border-red-600 text-red-700">
-          <AlertTitle>Błąd ❌</AlertTitle>
-          <AlertDescription>
-            Coś poszło nie tak. Spróbuj ponownie później.
-          </AlertDescription>
-        </Alert>
-      )}
+      {/* aria-live dla czytników */}
+      <p className="sr-only" aria-live="polite">
+        {liveMsg}
+      </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         {/* Imię + Email */}
@@ -129,6 +244,7 @@ export default function ContactForm() {
               aria-describedby={errors.name ? "err-name" : undefined}
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
               placeholder="Jan Kowalski"
+              disabled={isSubmitting}
             />
             {errors.name && (
               <p id="err-name" className="text-sm text-red-600 mt-1">
@@ -150,6 +266,7 @@ export default function ContactForm() {
               aria-describedby={errors.email ? "err-email" : undefined}
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
               placeholder="jan@przyklad.pl"
+              disabled={isSubmitting}
             />
             {errors.email && (
               <p id="err-email" className="text-sm text-red-600 mt-1">
@@ -167,12 +284,17 @@ export default function ContactForm() {
             </label>
             <input
               id="phone"
-              inputMode="tel"
+              inputMode="numeric"
+              pattern="[0-9]*"
               {...register("phone")}
+              onBeforeInput={allowOnlyDigits as any}
+              onKeyDown={onPhoneKeyDown}
+              onPaste={onPhonePaste}
               aria-invalid={!!errors.phone}
               aria-describedby={errors.phone ? "err-phone" : undefined}
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="+48 500 600 700"
+              placeholder="np. 500600700"
+              disabled={isSubmitting}
             />
             {errors.phone && (
               <p id="err-phone" className="text-sm text-red-600 mt-1">
@@ -192,6 +314,7 @@ export default function ContactForm() {
               aria-describedby={errors.city ? "err-city" : undefined}
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
               placeholder="Koszalin"
+              disabled={isSubmitting}
             />
             {errors.city && (
               <p id="err-city" className="text-sm text-red-600 mt-1">
@@ -201,45 +324,140 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* Pliki */}
+        {/* Dropzone + lista + miniatury */}
         <div>
-          <label htmlFor="files" className="block text-sm font-medium">
-            Dodaj zdjęcia powierzchni lub projektu* (Max. 3)
+          <label className="block text-sm font-medium">
+            Dodaj zdjęcia powierzchni lub projektu (opcjonalnie, max 3)
           </label>
-          <input
-            id="files"
-            type="file"
-            multiple
-            accept=".jpg,.jpeg,.png,.pdf"
-            {...register("files")}
-            aria-invalid={!!errors.files}
-            aria-describedby={errors.files ? "err-files" : undefined}
-            className="mt-2 block w-full text-sm text-gray-700 file:mr-4 file:rounded-md file:border file:border-gray-300 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium hover:file:bg-gray-100"
-          />
+
+          <div
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            onDragEnter={() => setIsOver(true)}
+            onDragLeave={onDragLeave}
+            className={[
+              "mt-2 grid place-items-center rounded-lg border border-dashed px-4 py-6 text-sm",
+              isOver
+                ? "bg-teal-50 border-teal-400"
+                : "bg-white border-gray-300",
+              errors.files ? "ring-1 ring-red-500" : "",
+            ].join(" ")}
+          >
+            <p className="text-center">
+              Przeciągnij i upuść pliki tutaj
+              <span className="text-gray-500"> lub </span>
+              <label htmlFor="files-input" className="underline cursor-pointer">
+                wybierz z dysku
+              </label>
+            </p>
+            <p className="mt-1 text-xs text-gray-500">
+              {files.length}/3 pliki, max 2&nbsp;MB każdy
+            </p>
+
+            <input
+              id="files-input"
+              type="file"
+              multiple
+              accept=".jpg,.jpeg,.png,.pdf"
+              onChange={onAddFiles}
+              className="hidden"
+              disabled={isSubmitting}
+            />
+          </div>
+
+          {files.length > 0 && (
+            <ul className="mt-3 space-y-2">
+              {files.map((f, i) => (
+                <li
+                  key={`${f.name}-${f.size}-${i}`}
+                  className="flex items-center justify-between rounded-md border border-gray-200 px-3 py-2 text-sm"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    {f.type.startsWith("image/") ? (
+                      <img
+                        src={URL.createObjectURL(f)}
+                        onLoad={(e) =>
+                          URL.revokeObjectURL(
+                            (e.target as HTMLImageElement).src
+                          )
+                        }
+                        alt={f.name}
+                        className="h-10 w-10 rounded-md object-cover ring-1 ring-gray-200"
+                      />
+                    ) : (
+                      <div className="h-10 w-10 rounded-md bg-gray-100 grid place-items-center text-[10px] font-semibold text-gray-600 ring-1 ring-gray-200">
+                        PDF
+                      </div>
+                    )}
+                    <div className="truncate">
+                      <span className="font-medium truncate block max-w-[220px]">
+                        {f.name}
+                      </span>
+                      <span className="text-gray-500">
+                        {prettySize(f.size)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    aria-label={`Usuń plik ${f.name}`}
+                    onClick={() => removeFile(i)}
+                    className="ml-3 inline-flex h-6 w-6 items-center justify-center rounded-md border border-gray-300 hover:bg-gray-50"
+                    disabled={isSubmitting}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
           {errors.files && (
-            <p id="err-files" className="text-sm text-red-600 mt-1">
-              {errors.files.message}
+            <p id="err-files" className="text-sm text-red-600 mt-2">
+              {errors.files.message as string}
             </p>
           )}
         </div>
 
-        {/* Wiadomość */}
+        {/* Wiadomość (wymagana) */}
         <div>
           <label htmlFor="message" className="block text-sm font-medium">
-            Dodatkowe informacje (opcjonalnie)
+            Wiadomość*
           </label>
           <textarea
             id="message"
             {...register("message")}
             rows={5}
             className="mt-1 w-full resize-none rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            placeholder="Opisz szczegóły projektu…"
+            placeholder="Opisz szczegóły…"
+            disabled={isSubmitting}
           />
+          {errors.message && (
+            <p className="text-sm text-red-600 mt-1">
+              {errors.message.message}
+            </p>
+          )}
         </div>
+
+        {/* Honeypot (anty-spam) */}
+        <input
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register("website")}
+          className="hidden"
+          aria-hidden="true"
+        />
 
         {/* Checkbox */}
         <div className="flex items-center gap-2">
-          <input id="privacy" type="checkbox" {...register("privacy")} />
+          <input
+            id="privacy"
+            type="checkbox"
+            {...register("privacy")}
+            disabled={isSubmitting}
+          />
           <label htmlFor="privacy" className="text-sm text-gray-700">
             Zapoznałem(am) się i akceptuję Politykę Prywatności
           </label>
@@ -254,8 +472,32 @@ export default function ContactForm() {
           disabled={isSubmitting}
           className="inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-teal-500 to-cyan-500 px-5 py-2.5 font-medium text-white hover:opacity-90 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-600"
         >
-          <Send size={18} />
-          {isSubmitting ? "Wysyłanie..." : "Wyślij zapytanie"}
+          {isSubmitting ? (
+            <>
+              <svg
+                className="h-4 w-4 animate-spin"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                  opacity=".25"
+                />
+                <path d="M22 12a10 10 0 0 1-10 10" fill="currentColor" />
+              </svg>
+              Wysyłanie…
+            </>
+          ) : (
+            <>
+              <Send size={18} />
+              Wyślij zapytanie
+            </>
+          )}
         </button>
       </form>
     </div>
